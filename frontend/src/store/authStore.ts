@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { apiClient } from '../lib/api';
 import {
   User,
   AuthState,
@@ -7,9 +8,6 @@ import {
   RegisterCredentials,
   ApiResponse,
 } from '../types';
-
-// Backend API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 interface AuthStore extends AuthState {
   // Actions
@@ -36,16 +34,8 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true });
 
         try {
-          const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(credentials),
-          });
-
           const data: ApiResponse<{ user: User; token: string }> =
-            await response.json();
+            await apiClient.auth.login(credentials);
 
           if (data.success && data.data) {
             set({
@@ -70,16 +60,8 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true });
 
         try {
-          const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(credentials),
-          });
-
           const data: ApiResponse<{ user: User; token: string }> =
-            await response.json();
+            await apiClient.auth.register(credentials);
 
           if (data.success && data.data) {
             set({

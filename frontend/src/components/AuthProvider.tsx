@@ -2,10 +2,8 @@
 
 import { useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { apiClient } from '../lib/api';
 import LoadingSpinner from './LoadingSpinner';
-
-// Backend API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -21,20 +19,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
       if (token && isAuthenticated) {
         setLoading(true);
         try {
-          // Verify token with backend
-          const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
+          // Verify token with backend using API client
+          const data = await apiClient.auth.me();
 
-          if (!response.ok) {
-            throw new Error('Token verification failed');
-          }
-
-          const data = await response.json();
           if (data.success && data.data?.user) {
             // Token is valid, update user data if needed
             useAuthStore.getState().setUser(data.data.user);
