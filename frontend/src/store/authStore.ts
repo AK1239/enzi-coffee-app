@@ -8,6 +8,9 @@ import {
   ApiResponse,
 } from '../types';
 
+// Backend API base URL
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
 interface AuthStore extends AuthState {
   // Actions
   login: (credentials: LoginCredentials) => Promise<boolean>;
@@ -33,9 +36,7 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true });
 
         try {
-          // TODO: Replace with actual API call when API client is set up
-          // For now, simulate API call
-          const response = await fetch('/api/auth/login', {
+          const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -69,9 +70,7 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true });
 
         try {
-          // TODO: Replace with actual API call when API client is set up
-          // For now, simulate API call
-          const response = await fetch('/api/auth/register', {
+          const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

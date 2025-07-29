@@ -4,12 +4,16 @@ import { useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
 import LoadingSpinner from './LoadingSpinner';
 
+// Backend API base URL
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
 interface AuthProviderProps {
   children: React.ReactNode;
 }
 
 export default function AuthProvider({ children }: AuthProviderProps) {
-  const { token, isAuthenticated, isLoading, setLoading } = useAuthStore();
+  const { token, isAuthenticated, isLoading, setLoading, clearAuth } =
+    useAuthStore();
 
   useEffect(() => {
     // Check if user is authenticated on app load
@@ -17,14 +21,30 @@ export default function AuthProvider({ children }: AuthProviderProps) {
       if (token && isAuthenticated) {
         setLoading(true);
         try {
-          // TODO: Verify token with backend when API client is set up
-          // For now, we'll assume the token is valid if it exists
-          // In a real app, you'd make a request to /auth/me to verify the token
-          console.log('Token exists, user is authenticated');
+          // Verify token with backend
+          const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error('Token verification failed');
+          }
+
+          const data = await response.json();
+          if (data.success && data.data?.user) {
+            // Token is valid, update user data if needed
+            useAuthStore.getState().setUser(data.data.user);
+          } else {
+            throw new Error('Invalid response from server');
+          }
         } catch (error) {
           console.error('Token verification failed:', error);
           // If token verification fails, clear auth state
-          useAuthStore.getState().clearAuth();
+          clearAuth();
         } finally {
           setLoading(false);
         }
@@ -34,7 +54,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     };
 
     checkAuth();
-  }, [token, isAuthenticated, setLoading]);
+  }, [token, isAuthenticated, setLoading, clearAuth]);
 
   // Show loading spinner while checking authentication
   if (isLoading) {
