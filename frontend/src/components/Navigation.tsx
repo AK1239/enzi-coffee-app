@@ -18,7 +18,7 @@ export default function Navigation() {
   }
 
   return (
-    <nav className="relative z-50 backdrop-blur-xl bg-black/20 border-b border-white/10 sticky top-0">
+    <nav className="z-50 backdrop-blur-xl bg-black/20 border-b border-white/10 sticky top-0">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo/Brand */}

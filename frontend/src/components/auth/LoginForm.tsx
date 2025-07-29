@@ -41,108 +41,141 @@ export default function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        {/* Email Field */}
-        <div className="mb-6">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Email Address
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={formData.email}
-            onChange={handleInputChange}
-            className={`appearance-none relative block w-full px-3 py-2 border ${
-              errors.email
-                ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-                : 'border-gray-300 focus:border-amber-500 focus:ring-amber-500'
-            } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50 sm:text-sm transition-colors`}
-            placeholder="Enter your email"
-          />
-          {errors.email && (
-            <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-          )}
-        </div>
+      {/* Glassmorphism form container */}
+      <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl p-8 relative overflow-hidden">
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-orange-500/5 to-transparent rounded-3xl"></div>
 
-        {/* Password Field */}
-        <div className="mb-6">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={formData.password}
-            onChange={handleInputChange}
-            className={`appearance-none relative block w-full px-3 py-2 border ${
-              errors.password
-                ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-                : 'border-gray-300 focus:border-amber-500 focus:ring-amber-500'
-            } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-opacity-50 sm:text-sm transition-colors`}
-            placeholder="Enter your password"
-          />
-          {errors.password && (
-            <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-          )}
-        </div>
-
-        {/* Submit Error */}
-        {submitError && (
-          <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-sm text-red-600">{submitError}</p>
-          </div>
-        )}
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {isLoading ? (
-            <div className="flex items-center">
-              <LoadingSpinner size="sm" className="mr-2" />
-              Signing in...
+        {/* Content */}
+        <div className="relative z-10">
+          {/* Email Field */}
+          <div className="mb-6">
+            <label
+              htmlFor="email"
+              className="block text-sm font-semibold text-amber-200 mb-3"
+            >
+              Email Address
+            </label>
+            <div className="relative">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={formData.email}
+                onChange={handleInputChange}
+                className={`w-full px-4 py-3 bg-white/10 backdrop-blur-xl border-2 ${
+                  errors.email
+                    ? 'border-red-400/50 focus:border-red-400'
+                    : 'border-white/20 focus:border-amber-400/50'
+                } rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20 transition-all duration-300`}
+                placeholder="Enter your email"
+              />
+              {errors.email && (
+                <p className="mt-2 text-sm text-red-400 flex items-center">
+                  <span className="w-1 h-1 bg-red-400 rounded-full mr-2"></span>
+                  {errors.email}
+                </p>
+              )}
             </div>
-          ) : (
-            'Sign in'
+          </div>
+
+          {/* Password Field */}
+          <div className="mb-6">
+            <label
+              htmlFor="password"
+              className="block text-sm font-semibold text-amber-200 mb-3"
+            >
+              Password
+            </label>
+            <div className="relative">
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={formData.password}
+                onChange={handleInputChange}
+                className={`w-full px-4 py-3 bg-white/10 backdrop-blur-xl border-2 ${
+                  errors.password
+                    ? 'border-red-400/50 focus:border-red-400'
+                    : 'border-white/20 focus:border-amber-400/50'
+                } rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20 transition-all duration-300`}
+                placeholder="Enter your password"
+              />
+              {errors.password && (
+                <p className="mt-2 text-sm text-red-400 flex items-center">
+                  <span className="w-1 h-1 bg-red-400 rounded-full mr-2"></span>
+                  {errors.password}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Submit Error */}
+          {submitError && (
+            <div className="mb-6 p-4 bg-red-500/10 backdrop-blur-xl border border-red-400/30 rounded-2xl">
+              <p className="text-sm text-red-300 flex items-center">
+                <span className="w-2 h-2 bg-red-400 rounded-full mr-2 animate-pulse"></span>
+                {submitError}
+              </p>
+            </div>
           )}
-        </button>
-      </div>
 
-      {/* Register Link */}
-      <div className="text-center">
-        <p className="text-sm text-gray-600">
-          Don&apos;t have an account?{' '}
-          <Link
-            href="/register"
-            className="font-medium text-amber-600 hover:text-amber-500 transition-colors"
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="group relative w-full flex justify-center py-3 px-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-amber-500/30 transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 overflow-hidden"
           >
-            Sign up here
-          </Link>
-        </p>
+            <span className="relative z-10 flex items-center space-x-2">
+              {isLoading ? (
+                <>
+                  <LoadingSpinner size="sm" />
+                  <span>Signing in...</span>
+                </>
+              ) : (
+                <>
+                  <span>Sign In</span>
+                  <span className="text-xl group-hover:translate-x-1 transition-transform duration-300">
+                    →
+                  </span>
+                </>
+              )}
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute inset-0 bg-white/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </button>
+        </div>
       </div>
 
-      {/* Back to Home */}
-      <div className="text-center">
-        <Link
-          href="/"
-          className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
-        >
-          ← Back to home
-        </Link>
+      {/* Navigation Links */}
+      <div className="space-y-4">
+        {/* Register Link */}
+        <div className="text-center">
+          <p className="text-gray-300 text-sm">
+            Don&apos;t have an account?{' '}
+            <Link
+              href="/register"
+              className="font-semibold text-transparent bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text hover:from-amber-200 hover:to-orange-300 transition-all duration-300"
+            >
+              Sign up here
+            </Link>
+          </p>
+        </div>
+
+        {/* Back to Home */}
+        <div className="text-center">
+          <Link
+            href="/"
+            className="inline-flex items-center space-x-2 text-gray-400 hover:text-amber-300 transition-colors duration-300 text-sm"
+          >
+            <span>←</span>
+            <span>Back to home</span>
+          </Link>
+        </div>
       </div>
     </form>
   );
