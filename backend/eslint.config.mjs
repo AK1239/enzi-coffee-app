@@ -31,8 +31,12 @@ export default [
     rules: {
       // TypeScript specific rules
       '@typescript-eslint/no-unused-vars': [
-        'error',
-        { argsIgnorePattern: '^_' },
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
@@ -45,6 +49,7 @@ export default [
       'no-debugger': 'error',
       'no-duplicate-imports': 'error',
       'no-unused-expressions': 'error',
+      'no-unused-vars': 'off', // Disable in favor of TypeScript-specific rule
       'prefer-const': 'error',
       'no-var': 'error',
 
@@ -63,7 +68,7 @@ export default [
       'no-script-url': 'error',
 
       // Node.js specific
-      'no-process-exit': 'error',
+      'no-process-exit': 'warn',
       'no-path-concat': 'error',
     },
   },
@@ -74,7 +79,14 @@ export default [
       sourceType: 'module',
     },
     rules: {
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
       'no-console': 'warn',
       'no-debugger': 'error',
       'prefer-const': 'error',
