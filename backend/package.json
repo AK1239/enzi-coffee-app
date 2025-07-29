@@ -13,6 +13,7 @@
     "test:middleware": "ts-node src/middleware/test-auth-middleware.ts",
     "test:routes": "ts-node src/routes/test-auth-routes.ts",
     "test:menu": "ts-node src/data/test-menu.ts",
+    "test:menu-routes": "ts-node src/routes/test-menu-routes.ts",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "format": "prettier --write .",
