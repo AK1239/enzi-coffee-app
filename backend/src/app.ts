@@ -3,10 +3,10 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { logger } from './utils/logger';
 
-// Import routes (will be created in later tasks)
-// import authRoutes from './routes/auth';
-// import menuRoutes from './routes/menu';
-// import orderRoutes from './routes/orders';
+// Import routes
+import authRoutes from './routes/auth';
+import menuRoutes from './routes/menu';
+import orderRoutes from './routes/orders';
 
 export function createServer(): Express {
   const app = express();
@@ -47,10 +47,10 @@ export function createServer(): Express {
     });
   });
 
-  // API routes (will be added in later tasks)
-  // app.use('/api/auth', authRoutes);
-  // app.use('/api/menu', menuRoutes);
-  // app.use('/api/orders', orderRoutes);
+  // API routes
+  app.use('/api/auth', authRoutes);
+  app.use('/api/menu', menuRoutes);
+  app.use('/api/orders', orderRoutes);
 
   // Root endpoint
   app.get('/', (req: Request, res: Response) => {
@@ -58,6 +58,11 @@ export function createServer(): Express {
       message: 'Welcome to Enzi Coffee Shop API',
       version: '1.0.0',
       documentation: '/health',
+      endpoints: {
+        auth: '/api/auth',
+        menu: '/api/menu',
+        orders: '/api/orders',
+      },
     });
   });
 
@@ -69,6 +74,7 @@ export function createServer(): Express {
     const isDevelopment = process.env['NODE_ENV'] === 'development';
 
     res.status(500).json({
+      success: false,
       error: 'Internal server error',
       message: isDevelopment ? error.message : 'Something went wrong',
       ...(isDevelopment && { stack: error.stack }),
