@@ -11,6 +11,9 @@ export { default as BackgroundEffects } from './BackgroundEffects';
 export { default as FeatureCard } from './FeatureCard';
 export { default as TestimonialCard } from './TestimonialCard';
 
+// Auth components
+export { default as LoginForm } from './auth/LoginForm';
+
 // Utility components
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as AuthProvider } from './AuthProvider';
