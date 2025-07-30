@@ -16,7 +16,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     // Check if user is authenticated on app load
     const checkAuth = async () => {
-      if (token && isAuthenticated) {
+      if (token && isAuthenticated && !isLoading) {
         setLoading(true);
         try {
           // Verify token with backend using API client
@@ -35,13 +35,13 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         } finally {
           setLoading(false);
         }
-      } else {
+      } else if (!token && !isAuthenticated) {
         setLoading(false);
       }
     };
 
     checkAuth();
-  }, [token, isAuthenticated, setLoading, clearAuth]);
+  }, [token, isAuthenticated, setLoading, clearAuth, isLoading]);
 
   // Show loading spinner while checking authentication
   if (isLoading) {

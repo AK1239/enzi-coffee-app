@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import { authenticateToken } from '../middleware/auth';
 import {
   validateRegistration,
   validateLogin,
@@ -132,7 +133,7 @@ router.post('/login', async (req: Request, res: Response) => {
  * GET /auth/me
  * Get current user information (requires authentication)
  */
-router.get('/me', async (req: Request, res: Response) => {
+router.get('/me', authenticateToken, async (req: Request, res: Response) => {
   try {
     // This endpoint requires authentication middleware
     // The user data will be available in req.user from the middleware
