@@ -13,6 +13,7 @@ export { default as TestimonialCard } from './TestimonialCard';
 
 // Auth components
 export { default as LoginForm } from './auth/LoginForm';
+export { default as RegisterForm } from './auth/RegisterForm';
 
 // Utility components
 export { default as LoadingSpinner } from './LoadingSpinner';
