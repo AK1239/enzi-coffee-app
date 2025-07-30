@@ -8,6 +8,7 @@ import {
   RegisterCredentials,
   ApiResponse,
 } from '../types';
+import { setAuthCookie, removeAuthCookie } from '../utils/cookies';
 
 interface AuthStore extends AuthState {
   // Actions
@@ -44,6 +45,8 @@ export const useAuthStore = create<AuthStore>()(
               isAuthenticated: true,
               isLoading: false,
             });
+            // Set authentication cookie for middleware access
+            setAuthCookie(data.data.token);
             return true;
           } else {
             set({ isLoading: false });
@@ -70,6 +73,8 @@ export const useAuthStore = create<AuthStore>()(
               isAuthenticated: true,
               isLoading: false,
             });
+            // Set authentication cookie for middleware access
+            setAuthCookie(data.data.token);
             return true;
           } else {
             set({ isLoading: false });
@@ -89,6 +94,8 @@ export const useAuthStore = create<AuthStore>()(
           isAuthenticated: false,
           isLoading: false,
         });
+        // Remove authentication cookie
+        removeAuthCookie();
       },
 
       setUser: (user: User) => {
@@ -106,6 +113,8 @@ export const useAuthStore = create<AuthStore>()(
           isAuthenticated: false,
           isLoading: false,
         });
+        // Remove authentication cookie
+        removeAuthCookie();
       },
 
       setLoading: (loading: boolean) => {

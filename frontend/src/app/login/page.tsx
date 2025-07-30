@@ -1,22 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '../../store/authStore';
+import { useAuth } from '../../hooks';
 import { LoginForm, Navigation } from '../../components';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BackgroundEffects from '../../components/BackgroundEffects';
 
 export default function LoginPage() {
-  const router = useRouter();
-  const { isAuthenticated, isLoading } = useAuthStore();
-
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push('/dashboard');
-    }
-  }, [isAuthenticated, router]);
+  const { isLoading } = useAuth({ redirectIfAuthenticated: true });
 
   // Show loading spinner if authentication is being checked
   if (isLoading) {
