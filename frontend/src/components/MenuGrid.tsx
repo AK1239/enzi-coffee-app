@@ -145,8 +145,14 @@ function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
   return (
     <div className="bg-slate-700/50 backdrop-blur-xl rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 overflow-hidden border border-slate-600/50">
       {/* Item Image Placeholder */}
-      <div className="h-48 bg-gradient-to-br from-amber-900/20 to-orange-900/20 flex items-center justify-center border-b border-slate-600/50">
-        <div className="text-amber-400 text-4xl">☕</div>
+      <div className="h-48 bg-gradient-to-br from-amber-900/20 to-orange-900/20 flex items-center justify-center border-b border-slate-600/50 overflow-hidden">
+        <img
+          src={`/${item.image}`}
+          alt={item.name}
+          className="object-cover w-full h-full"
+          style={{ maxHeight: '12rem', minHeight: '100px' }}
+          loading="lazy"
+        />
       </div>
 
       {/* Item Content */}

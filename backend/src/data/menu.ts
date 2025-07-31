@@ -5,6 +5,7 @@ export interface MenuItem {
   description: string;
   category: 'hot' | 'cold' | 'espresso';
   available: boolean;
+  image: string;
 }
 
 export const menuItems: MenuItem[] = [
@@ -16,6 +17,7 @@ export const menuItems: MenuItem[] = [
       'Rich, concentrated shot of coffee brewed by forcing hot water through finely-ground coffee beans',
     category: 'espresso',
     available: true,
+    image: 'espresso.jpg',
   },
   {
     id: 2,
@@ -25,6 +27,7 @@ export const menuItems: MenuItem[] = [
       'Smooth espresso with steamed milk and a light layer of milk foam',
     category: 'hot',
     available: true,
+    image: 'latte.jpg',
   },
   {
     id: 3,
@@ -34,6 +37,7 @@ export const menuItems: MenuItem[] = [
       'Equal parts espresso, steamed milk, and milk foam for a balanced coffee experience',
     category: 'hot',
     available: true,
+    image: 'cappucino.jpg',
   },
   {
     id: 4,
@@ -43,6 +47,7 @@ export const menuItems: MenuItem[] = [
       'Espresso combined with rich chocolate syrup and steamed milk, topped with whipped cream',
     category: 'hot',
     available: true,
+    image: 'mocha.jpg',
   },
   {
     id: 5,
@@ -52,6 +57,7 @@ export const menuItems: MenuItem[] = [
       'Espresso diluted with hot water for a lighter coffee experience',
     category: 'hot',
     available: true,
+    image: 'americano.webp',
   },
   {
     id: 6,
@@ -60,6 +66,7 @@ export const menuItems: MenuItem[] = [
     description: 'Espresso "marked" with a small amount of steamed milk',
     category: 'espresso',
     available: true,
+    image: 'macchiato.webp',
   },
   {
     id: 7,
@@ -69,6 +76,7 @@ export const menuItems: MenuItem[] = [
       'Chilled espresso with cold milk over ice for a refreshing coffee drink',
     category: 'cold',
     available: true,
+    image: 'iced-latte.jpg',
   },
   {
     id: 8,
@@ -77,6 +85,7 @@ export const menuItems: MenuItem[] = [
     description: 'Cold espresso with chocolate syrup and milk, served over ice',
     category: 'cold',
     available: true,
+    image: 'iced-mocha.jpg',
   },
 ];
 

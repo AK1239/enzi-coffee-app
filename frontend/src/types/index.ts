@@ -40,6 +40,7 @@ export interface MenuItem {
   description: string;
   category: 'hot' | 'cold' | 'espresso';
   available: boolean;
+  image: string;
 }
 
 // Frontend-specific types
