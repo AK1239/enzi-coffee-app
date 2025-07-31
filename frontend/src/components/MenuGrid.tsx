@@ -71,10 +71,10 @@ export default function MenuGrid({
   if (error) {
     return (
       <div className="text-center p-8">
-        <div className="text-red-600 mb-4">{error}</div>
+        <div className="text-red-400 mb-4">{error}</div>
         <button
           onClick={clearError}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+          className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
         >
           Try Again
         </button>
@@ -85,7 +85,7 @@ export default function MenuGrid({
   if (filteredItems.length === 0) {
     return (
       <div className="text-center p-8">
-        <div className="text-gray-500 text-lg">
+        <div className="text-slate-400 text-lg">
           {searchQuery
             ? `No items found for "${searchQuery}"`
             : selectedCategory
@@ -129,31 +129,31 @@ function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'hot':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-500/20 text-red-300 border border-red-500/30';
       case 'cold':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-500/20 text-blue-300 border border-blue-500/30';
       case 'espresso':
-        return 'bg-amber-100 text-amber-800';
+        return 'bg-amber-500/20 text-amber-300 border border-amber-500/30';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-slate-500/20 text-slate-300 border border-slate-500/30';
     }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden">
+    <div className="bg-slate-700/50 backdrop-blur-xl rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 overflow-hidden border border-slate-600/50">
       {/* Item Image Placeholder */}
-      <div className="h-48 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
-        <div className="text-amber-600 text-4xl">☕</div>
+      <div className="h-48 bg-gradient-to-br from-amber-900/20 to-orange-900/20 flex items-center justify-center border-b border-slate-600/50">
+        <div className="text-amber-400 text-4xl">☕</div>
       </div>
 
       {/* Item Content */}
       <div className="p-4">
         {/* Header */}
         <div className="flex justify-between items-start mb-2">
-          <h3 className="font-semibold text-lg text-gray-900 truncate">
+          <h3 className="font-semibold text-lg text-white truncate">
             {item.name}
           </h3>
-          <span className="text-green-600 font-bold text-lg">
+          <span className="text-green-400 font-bold text-lg">
             ${item.price.toFixed(2)}
           </span>
         </div>
@@ -170,7 +170,7 @@ function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
         </div>
 
         {/* Description */}
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+        <p className="text-slate-300 text-sm mb-4 line-clamp-2">
           {item.description}
         </p>
 
@@ -178,10 +178,10 @@ function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
         <button
           onClick={handleAddToCart}
           disabled={!item.available || isAdding}
-          className={`w-full py-2 px-4 rounded-md font-medium transition-colors duration-200 ${
+          className={`w-full py-2 px-4 rounded-lg font-medium transition-colors duration-200 ${
             item.available
-              ? 'bg-amber-600 text-white hover:bg-amber-700 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              ? 'bg-amber-600 text-white hover:bg-amber-700 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-slate-700'
+              : 'bg-slate-600 text-slate-400 cursor-not-allowed'
           } ${isAdding ? 'opacity-75 cursor-wait' : ''}`}
         >
           {isAdding ? (
