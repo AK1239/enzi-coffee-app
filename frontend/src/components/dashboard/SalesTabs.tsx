@@ -5,7 +5,7 @@ interface SalesTabsProps {
 
 export default function SalesTabs({ activeTab, onTabChange }: SalesTabsProps) {
   const tabs = [
-    { id: 'daily', label: 'Today&apos;s Orders' },
+    { id: 'daily', label: 'Todays Orders' },
     { id: 'history', label: 'Order History' },
   ] as const;
 
