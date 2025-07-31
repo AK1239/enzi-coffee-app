@@ -40,15 +40,15 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Copy Prisma schema before npm install
+COPY prisma ./prisma
+
+# Install only production dependencies (skip postinstall script)
+RUN npm ci --only=production --ignore-scripts && npm cache clean --force
 
 # Copy built application from builder stage
 COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
 COPY --from=builder --chown=nodejs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
-
-# Copy Prisma schema
-COPY --chown=nodejs:nodejs prisma ./prisma
 
 # Switch to non-root user
 USER nodejs
