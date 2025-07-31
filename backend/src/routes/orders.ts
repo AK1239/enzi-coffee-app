@@ -3,8 +3,14 @@ import { z } from 'zod';
 import { authenticateToken } from '../middleware/auth';
 import prisma from '../lib/prisma';
 import { getMenuItemById } from '../data/menu';
+import { Order, User } from '@prisma/client';
 
 const router = Router();
+
+// Type for order with included user relation
+type OrderWithUser = Order & {
+  user: Pick<User, 'id' | 'name' | 'email'>;
+};
 
 // Validation schemas
 const orderItemSchema = z.object({
@@ -29,108 +35,117 @@ const createOrderSchema = z.object({
  * POST /orders
  * Create new order (requires authentication)
  */
-router.post('/', authenticateToken, async (req: Request, res: Response) => {
-  try {
-    // Validate order data
-    const validation = createOrderSchema.safeParse(req.body);
+router.post(
+  '/',
+  authenticateToken,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      // Validate order data
+      const validation = createOrderSchema.safeParse(req.body);
 
-    if (!validation.success) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid order data',
-        error: 'INVALID_ORDER_DATA',
-      });
-    }
-
-    const { items, totalAmount, itemCount } = validation.data;
-    const userId = req.user!.id;
-
-    // Verify all menu items exist and calculate actual total
-    let calculatedTotal = 0;
-    let calculatedItemCount = 0;
-
-    for (const item of items) {
-      const menuItem = getMenuItemById(item.id);
-      if (!menuItem) {
-        return res.status(400).json({
+      if (!validation.success) {
+        res.status(400).json({
           success: false,
-          message: `Menu item with ID ${item.id} not found`,
-          error: 'INVALID_MENU_ITEM',
+          message: 'Invalid order data',
+          error: 'INVALID_ORDER_DATA',
         });
+        return;
       }
 
-      if (!menuItem.available) {
-        return res.status(400).json({
-          success: false,
-          message: `Menu item ${menuItem.name} is not available`,
-          error: 'ITEM_NOT_AVAILABLE',
-        });
+      const { items, totalAmount, itemCount } = validation.data;
+      const userId = req.user!.id;
+
+      // Verify all menu items exist and calculate actual total
+      let calculatedTotal = 0;
+      let calculatedItemCount = 0;
+
+      for (const item of items) {
+        const menuItem = getMenuItemById(item.id);
+        if (!menuItem) {
+          res.status(400).json({
+            success: false,
+            message: `Menu item with ID ${item.id} not found`,
+            error: 'INVALID_MENU_ITEM',
+          });
+          return;
+        }
+
+        if (!menuItem.available) {
+          res.status(400).json({
+            success: false,
+            message: `Menu item ${menuItem.name} is not available`,
+            error: 'ITEM_NOT_AVAILABLE',
+          });
+          return;
+        }
+
+        calculatedTotal += menuItem.price * item.quantity;
+        calculatedItemCount += item.quantity;
       }
 
-      calculatedTotal += menuItem.price * item.quantity;
-      calculatedItemCount += item.quantity;
-    }
+      // Verify total amount matches calculated total (with small tolerance for rounding)
+      const tolerance = 0.01;
+      if (Math.abs(calculatedTotal - totalAmount) > tolerance) {
+        res.status(400).json({
+          success: false,
+          message: 'Total amount does not match calculated total',
+          error: 'TOTAL_MISMATCH',
+        });
+        return;
+      }
 
-    // Verify total amount matches calculated total (with small tolerance for rounding)
-    const tolerance = 0.01;
-    if (Math.abs(calculatedTotal - totalAmount) > tolerance) {
-      return res.status(400).json({
-        success: false,
-        message: 'Total amount does not match calculated total',
-        error: 'TOTAL_MISMATCH',
-      });
-    }
+      if (calculatedItemCount !== itemCount) {
+        res.status(400).json({
+          success: false,
+          message: 'Item count does not match calculated count',
+          error: 'ITEM_COUNT_MISMATCH',
+        });
+        return;
+      }
 
-    if (calculatedItemCount !== itemCount) {
-      return res.status(400).json({
-        success: false,
-        message: 'Item count does not match calculated count',
-        error: 'ITEM_COUNT_MISMATCH',
-      });
-    }
-
-    // Create order in database
-    const order = await prisma.order.create({
-      data: {
-        userId,
-        totalAmount: calculatedTotal,
-        itemCount: calculatedItemCount,
-        items: items,
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
+      // Create order in database
+      const order = (await prisma.order.create({
+        data: {
+          userId,
+          totalAmount: calculatedTotal,
+          itemCount: calculatedItemCount,
+          items: items,
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
           },
         },
-      },
-    });
+      })) as OrderWithUser;
 
-    res.status(201).json({
-      success: true,
-      message: 'Order created successfully',
-      data: {
-        order: {
-          id: order.id,
-          totalAmount: order.totalAmount,
-          itemCount: order.itemCount,
-          items: order.items,
-          createdAt: order.createdAt,
-          user: order.user,
+      res.status(201).json({
+        success: true,
+        message: 'Order created successfully',
+        data: {
+          order: {
+            id: order.id,
+            totalAmount: order.totalAmount,
+            itemCount: order.itemCount,
+            items: order.items,
+            createdAt: order.createdAt,
+            user: order.user,
+          },
         },
-      },
-    });
-  } catch (error) {
-    console.error('Error creating order:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to create order',
-      error: 'ORDER_CREATION_ERROR',
-    });
+      });
+    } catch (error) {
+      console.error('Error creating order:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to create order',
+        error: 'ORDER_CREATION_ERROR',
+      });
+    }
   }
-});
+);
 
 /**
  * GET /orders
@@ -144,7 +159,7 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
     const offset = (page - 1) * limit;
 
     // Get user's orders with pagination
-    const orders = await prisma.order.findMany({
+    const orders = (await prisma.order.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
       skip: offset,
@@ -158,7 +173,7 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
           },
         },
       },
-    });
+    })) as OrderWithUser[];
 
     // Get total count for pagination
     const totalOrders = await prisma.order.count({
@@ -169,7 +184,7 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
       success: true,
       message: 'User orders retrieved successfully',
       data: {
-        orders: orders.map((order: any) => ({
+        orders: orders.map((order: OrderWithUser) => ({
           id: order.id,
           totalAmount: order.totalAmount,
           itemCount: order.itemCount,
@@ -221,7 +236,7 @@ router.get('/daily', authenticateToken, async (req: Request, res: Response) => {
     );
 
     // Get today's orders
-    const todayOrders = await prisma.order.findMany({
+    const todayOrders = (await prisma.order.findMany({
       where: {
         userId,
         createdAt: {
@@ -239,15 +254,15 @@ router.get('/daily', authenticateToken, async (req: Request, res: Response) => {
           },
         },
       },
-    });
+    })) as OrderWithUser[];
 
     // Calculate daily totals
     const dailyTotal = todayOrders.reduce(
-      (sum: number, order: any) => sum + Number(order.totalAmount),
+      (sum: number, order: OrderWithUser) => sum + Number(order.totalAmount),
       0
     );
     const dailyItemCount = todayOrders.reduce(
-      (sum: number, order: any) => sum + order.itemCount,
+      (sum: number, order: OrderWithUser) => sum + order.itemCount,
       0
     );
 
@@ -255,7 +270,7 @@ router.get('/daily', authenticateToken, async (req: Request, res: Response) => {
       success: true,
       message: "Today's orders retrieved successfully",
       data: {
-        orders: todayOrders.map((order: any) => ({
+        orders: todayOrders.map((order: OrderWithUser) => ({
           id: order.id,
           totalAmount: order.totalAmount,
           itemCount: order.itemCount,
@@ -285,57 +300,71 @@ router.get('/daily', authenticateToken, async (req: Request, res: Response) => {
  * GET /orders/:id
  * Get specific order by ID (requires authentication)
  */
-router.get('/:id', authenticateToken, async (req: Request, res: Response) => {
-  try {
-    const orderId = req.params['id'];
-    const userId = req.user!.id;
+router.get(
+  '/:id',
+  authenticateToken,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const orderId = req.params['id'];
+      const userId = req.user!.id;
 
-    const order = await prisma.order.findFirst({
-      where: {
-        id: orderId,
-        userId, // Ensure user can only access their own orders
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
+      if (!orderId) {
+        res.status(400).json({
+          success: false,
+          message: 'Order ID is required',
+          error: 'MISSING_ORDER_ID',
+        });
+        return;
+      }
+
+      const order = (await prisma.order.findFirst({
+        where: {
+          id: orderId,
+          userId, // Ensure user can only access their own orders
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
           },
         },
-      },
-    });
+      })) as OrderWithUser | null;
 
-    if (!order) {
-      return res.status(404).json({
+      if (!order) {
+        res.status(404).json({
+          success: false,
+          message: 'Order not found',
+          error: 'ORDER_NOT_FOUND',
+        });
+        return;
+      }
+
+      res.json({
+        success: true,
+        message: 'Order retrieved successfully',
+        data: {
+          order: {
+            id: order.id,
+            totalAmount: order.totalAmount,
+            itemCount: order.itemCount,
+            items: order.items,
+            createdAt: order.createdAt,
+            user: order.user,
+          },
+        },
+      });
+    } catch (error) {
+      console.error('Error fetching order:', error);
+      res.status(500).json({
         success: false,
-        message: 'Order not found',
-        error: 'ORDER_NOT_FOUND',
+        message: 'Failed to retrieve order',
+        error: 'ORDER_FETCH_ERROR',
       });
     }
-
-    res.json({
-      success: true,
-      message: 'Order retrieved successfully',
-      data: {
-        order: {
-          id: order.id,
-          totalAmount: order.totalAmount,
-          itemCount: order.itemCount,
-          items: order.items,
-          createdAt: order.createdAt,
-          user: order.user,
-        },
-      },
-    });
-  } catch (error) {
-    console.error('Error fetching order:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to retrieve order',
-      error: 'ORDER_FETCH_ERROR',
-    });
   }
-});
+);
 
 export default router;

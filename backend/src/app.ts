@@ -30,16 +30,16 @@ export function createServer(): Express {
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
   // Request logging middleware
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    logger.info(`${req.method} ${req.path}`, {
-      ip: req.ip,
-      userAgent: req.get('User-Agent'),
+  app.use((_req: Request, _res: Response, next: NextFunction) => {
+    logger.info(`${_req.method} ${_req.path}`, {
+      ip: _req.ip,
+      userAgent: _req.get('User-Agent'),
     });
     next();
   });
 
   // Health check endpoint
-  app.get('/health', (req: Request, res: Response) => {
+  app.get('/health', (_req: Request, res: Response) => {
     res.status(200).json({
       status: 'OK',
       timestamp: new Date().toISOString(),
@@ -54,7 +54,7 @@ export function createServer(): Express {
   app.use('/api/orders', orderRoutes);
 
   // Root endpoint
-  app.get('/', (req: Request, res: Response) => {
+  app.get('/', (_req: Request, res: Response) => {
     res.json({
       message: 'Welcome to Enzi Coffee Shop API',
       version: '1.0.0',

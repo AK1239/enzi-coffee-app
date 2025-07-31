@@ -25,7 +25,7 @@ declare global {
  */
 export async function authenticateToken(
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
@@ -69,7 +69,7 @@ export async function authenticateToken(
  */
 export async function optionalAuth(
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
@@ -102,7 +102,7 @@ export async function optionalAuth(
  * Role-based Authentication Middleware (for future use)
  * Checks if user has required role/permissions
  */
-export function requireRole(requiredRole: string) {
+export function requireRole(_requiredRole: string) {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user) {
       res.status(401).json({

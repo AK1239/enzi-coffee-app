@@ -15,17 +15,18 @@ const router = Router();
  * POST /auth/register
  * Register a new user account
  */
-router.post('/register', async (req: Request, res: Response) => {
+router.post('/register', async (req: Request, res: Response): Promise<void> => {
   try {
     // Validate input data
     const validation = validateRegistration(req.body);
 
     if (!validation.success) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: 'Invalid input data',
         errors: validation.errors,
       });
+      return;
     }
 
     const { email, password, name } = validation.data;
@@ -33,11 +34,12 @@ router.post('/register', async (req: Request, res: Response) => {
     // Check if email already exists
     const emailExists = await isEmailExists(email);
     if (emailExists) {
-      return res.status(409).json({
+      res.status(409).json({
         success: false,
         message: 'Email already registered',
         error: 'EMAIL_EXISTS',
       });
+      return;
     }
 
     // Create new user
@@ -61,8 +63,7 @@ router.post('/register', async (req: Request, res: Response) => {
         token,
       },
     });
-  } catch (error) {
-    console.error('Registration error:', error);
+  } catch {
     res.status(500).json({
       success: false,
       message: 'Internal server error',
@@ -75,17 +76,18 @@ router.post('/register', async (req: Request, res: Response) => {
  * POST /auth/login
  * Authenticate user and return JWT token
  */
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', async (req: Request, res: Response): Promise<void> => {
   try {
     // Validate input data
     const validation = validateLogin(req.body);
 
     if (!validation.success) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: 'Invalid input data',
         errors: validation.errors,
       });
+      return;
     }
 
     const { email, password } = validation.data;
@@ -94,11 +96,12 @@ router.post('/login', async (req: Request, res: Response) => {
     const user = await authenticateUser(email, password);
 
     if (!user) {
-      return res.status(401).json({
+      res.status(401).json({
         success: false,
         message: 'Invalid email or password',
         error: 'INVALID_CREDENTIALS',
       });
+      return;
     }
 
     // Generate JWT token
@@ -119,8 +122,7 @@ router.post('/login', async (req: Request, res: Response) => {
         token,
       },
     });
-  } catch (error) {
-    console.error('Login error:', error);
+  } catch {
     res.status(500).json({
       success: false,
       message: 'Internal server error',
@@ -133,40 +135,44 @@ router.post('/login', async (req: Request, res: Response) => {
  * GET /auth/me
  * Get current user information (requires authentication)
  */
-router.get('/me', authenticateToken, async (req: Request, res: Response) => {
-  try {
-    // This endpoint requires authentication middleware
-    // The user data will be available in req.user from the middleware
-    if (!req.user) {
-      return res.status(401).json({
+router.get(
+  '/me',
+  authenticateToken,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      // This endpoint requires authentication middleware
+      // The user data will be available in req.user from the middleware
+      if (!req.user) {
+        res.status(401).json({
+          success: false,
+          message: 'Authentication required',
+          error: 'AUTH_REQUIRED',
+        });
+        return;
+      }
+
+      res.json({
+        success: true,
+        message: 'User information retrieved successfully',
+        data: {
+          user: req.user,
+        },
+      });
+    } catch {
+      res.status(500).json({
         success: false,
-        message: 'Authentication required',
-        error: 'AUTH_REQUIRED',
+        message: 'Internal server error',
+        error: 'GET_USER_ERROR',
       });
     }
-
-    res.json({
-      success: true,
-      message: 'User information retrieved successfully',
-      data: {
-        user: req.user,
-      },
-    });
-  } catch (error) {
-    console.error('Get user error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-      error: 'GET_USER_ERROR',
-    });
   }
-});
+);
 
 /**
  * POST /auth/logout
  * Logout user (client-side token removal)
  */
-router.post('/logout', (req: Request, res: Response) => {
+router.post('/logout', (_req: Request, res: Response): void => {
   // JWT tokens are stateless, so logout is handled client-side
   // by removing the token from storage
   res.json({
@@ -182,7 +188,7 @@ router.post('/logout', (req: Request, res: Response) => {
  * POST /auth/refresh
  * Refresh JWT token (for future implementation)
  */
-router.post('/refresh', (req: Request, res: Response) => {
+router.post('/refresh', (_req: Request, res: Response): void => {
   // This endpoint can be implemented later for token refresh functionality
   res.status(501).json({
     success: false,

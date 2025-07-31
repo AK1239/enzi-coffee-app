@@ -35,7 +35,7 @@ const itemIdSchema = z.object({
  * GET /menu
  * Get all menu items
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (_req: Request, res: Response): Promise<void> => {
   try {
     const menuItems = getAllMenuItems();
 
@@ -61,7 +61,7 @@ router.get('/', async (req: Request, res: Response) => {
  * GET /menu/categories
  * Get all menu categories
  */
-router.get('/categories', async (req: Request, res: Response) => {
+router.get('/categories', async (_req: Request, res: Response): Promise<void> => {
   try {
     const categories = getMenuCategories();
 
@@ -86,7 +86,7 @@ router.get('/categories', async (req: Request, res: Response) => {
  * GET /menu/category/:category
  * Get menu items by category
  */
-router.get('/category/:category', async (req: Request, res: Response) => {
+router.get('/category/:category', async (req: Request, res: Response): Promise<void> => {
   try {
     // Validate category parameter
     const validation = categorySchema.safeParse({
@@ -94,21 +94,23 @@ router.get('/category/:category', async (req: Request, res: Response) => {
     });
 
     if (!validation.success) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: 'Invalid category parameter',
         error: 'INVALID_CATEGORY',
       });
+      return;
     }
 
     const { category } = validation.data;
 
     if (!category) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: 'Category parameter is required',
         error: 'MISSING_CATEGORY',
       });
+      return;
     }
 
     const menuItems = getMenuItemsByCategory(category);
@@ -136,28 +138,30 @@ router.get('/category/:category', async (req: Request, res: Response) => {
  * GET /menu/item/:id
  * Get specific menu item by ID
  */
-router.get('/item/:id', async (req: Request, res: Response) => {
+router.get('/item/:id', async (req: Request, res: Response): Promise<void> => {
   try {
     // Validate ID parameter
     const validation = itemIdSchema.safeParse({ id: req.params['id'] });
 
     if (!validation.success) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: 'Invalid item ID',
         error: 'INVALID_ITEM_ID',
       });
+      return;
     }
 
     const { id } = validation.data;
     const menuItem = getMenuItemById(id);
 
     if (!menuItem) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: 'Menu item not found',
         error: 'ITEM_NOT_FOUND',
       });
+      return;
     }
 
     res.json({
@@ -181,7 +185,7 @@ router.get('/item/:id', async (req: Request, res: Response) => {
  * GET /menu/search
  * Search menu items by name
  */
-router.get('/search', async (req: Request, res: Response) => {
+router.get('/search', async (req: Request, res: Response): Promise<void> => {
   try {
     // Validate search query
     const validation = searchSchema.safeParse({
@@ -189,11 +193,12 @@ router.get('/search', async (req: Request, res: Response) => {
     });
 
     if (!validation.success) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: 'Invalid search query',
         error: 'INVALID_SEARCH_QUERY',
       });
+      return;
     }
 
     const { query } = validation.data;
@@ -222,7 +227,7 @@ router.get('/search', async (req: Request, res: Response) => {
  * GET /menu/available
  * Get only available menu items
  */
-router.get('/available', async (req: Request, res: Response) => {
+router.get('/available', async (_req: Request, res: Response): Promise<void> => {
   try {
     const availableItems = getAllMenuItems(); // This already filters by available: true
 
