@@ -19,12 +19,10 @@ export default function RegisterForm({
     email: '',
     password: '',
   });
-  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const { errors, submitError, isLoading, handleRegister, clearFieldError } =
     useAuthForm({
       onSuccess: () => {
-        setIsRedirecting(true);
         onSuccess?.();
       },
       redirectTo,
@@ -47,25 +45,15 @@ export default function RegisterForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await handleRegister(formData);
-  };
 
-  // Show loading screen when redirecting after successful registration
-  if (isRedirecting) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-100 to-amber-200">
-        <div className="text-center">
-          <LoadingSpinner size="lg" className="mb-6" />
-          <h2 className="text-2xl font-bold text-amber-800 mb-2">
-            Welcome aboard!
-          </h2>
-          <p className="text-amber-700 font-medium">
-            Redirecting to dashboard...
-          </p>
-        </div>
-      </div>
-    );
-  }
+    // Set loading state for registration process
+    const success = await handleRegister(formData);
+
+    if (success) {
+      // Use loading navigation to redirect to dashboard
+      navigateWithLoading('/dashboard', 'Welcome aboard! Loading dashboard...');
+    }
+  };
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -233,6 +221,7 @@ export default function RegisterForm({
         {/* Back to Home */}
         <div className="text-center">
           <button
+            type="button"
             onClick={() => navigateWithLoading('/', 'Loading Home...')}
             className="inline-flex items-center space-x-2 text-gray-400 hover:text-amber-300 transition-colors duration-300 text-sm"
           >

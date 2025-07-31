@@ -13,11 +13,13 @@ import { processAuthError } from '../utils/errorHandling';
 interface UseAuthFormOptions {
   onSuccess?: () => void;
   redirectTo?: string;
+  autoRedirect?: boolean;
 }
 
 export const useAuthForm = (options: UseAuthFormOptions = {}) => {
   const router = useRouter();
   const { login, register, isAuthenticated, isLoading } = useAuthStore();
+  const { autoRedirect = false } = options;
 
   const [errors, setErrors] = useState<ValidationError>({});
   const [submitError, setSubmitError] = useState<string>('');
@@ -42,11 +44,14 @@ export const useAuthForm = (options: UseAuthFormOptions = {}) => {
         const success = await login(credentials);
 
         if (success) {
-          const redirectPath = options.redirectTo || '/dashboard';
-          // Use replace instead of push to avoid adding to history stack
-          // This can help prevent multiple navigation attempts
-          router.replace(redirectPath);
           options.onSuccess?.();
+
+          // Only auto-redirect if explicitly enabled
+          if (autoRedirect) {
+            const redirectPath = options.redirectTo || '/dashboard';
+            router.replace(redirectPath);
+          }
+
           return true;
         } else {
           setSubmitError('Invalid email or password. Please try again.');
@@ -58,7 +63,7 @@ export const useAuthForm = (options: UseAuthFormOptions = {}) => {
         return false;
       }
     },
-    [login, router, clearErrors, options]
+    [login, router, clearErrors, options, autoRedirect]
   );
 
   const handleRegister = useCallback(
@@ -76,10 +81,14 @@ export const useAuthForm = (options: UseAuthFormOptions = {}) => {
         const success = await register(credentials);
 
         if (success) {
-          const redirectPath = options.redirectTo || '/dashboard';
-          // Use replace instead of push to avoid adding to history stack
-          router.replace(redirectPath);
           options.onSuccess?.();
+
+          // Only auto-redirect if explicitly enabled
+          if (autoRedirect) {
+            const redirectPath = options.redirectTo || '/dashboard';
+            router.replace(redirectPath);
+          }
+
           return true;
         } else {
           setSubmitError('Registration failed. Please try again.');
@@ -91,7 +100,7 @@ export const useAuthForm = (options: UseAuthFormOptions = {}) => {
         return false;
       }
     },
-    [register, router, clearErrors, options]
+    [register, router, clearErrors, options, autoRedirect]
   );
 
   const clearFieldError = useCallback(
