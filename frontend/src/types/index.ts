@@ -25,6 +25,14 @@ export interface OrderItem {
   quantity: number;
 }
 
+export interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  category: 'hot' | 'cold' | 'espresso';
+}
+
 export interface MenuItem {
   id: number;
   name: string;

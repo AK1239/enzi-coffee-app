@@ -23,5 +23,8 @@ export { default as AuthProvider } from './AuthProvider';
 // Menu components
 export { default as MenuGrid } from './MenuGrid';
 
+// Cart components
+export { default as Cart } from './Cart';
+
 // Dashboard components
 export * from './dashboard';

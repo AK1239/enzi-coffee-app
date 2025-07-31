@@ -3,14 +3,16 @@
 import { useState } from 'react';
 import MenuGrid from '../../../components/MenuGrid';
 import { MenuItem } from '../../../types';
+import { useCartStore } from '../../../store';
 
 export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleAddToCart = (item: MenuItem) => {
-    console.log('Added to cart:', item);
-    // This will be replaced with actual cart functionality in Task 3.10
+    // Use cart store directly
+    const { addItem } = useCartStore.getState();
+    addItem(item);
   };
 
   return (
@@ -30,13 +32,16 @@ export default function MenuPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Category Filter */}
           <div>
-            <label htmlFor="category" className="block text-sm font-medium text-slate-300 mb-2">
+            <label
+              htmlFor="category"
+              className="block text-sm font-medium text-slate-300 mb-2"
+            >
               Filter by Category
             </label>
             <select
               id="category"
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={e => setSelectedCategory(e.target.value)}
               className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors"
             >
               <option value="">All Categories</option>
@@ -48,14 +53,17 @@ export default function MenuPage() {
 
           {/* Search */}
           <div>
-            <label htmlFor="search" className="block text-sm font-medium text-slate-300 mb-2">
+            <label
+              htmlFor="search"
+              className="block text-sm font-medium text-slate-300 mb-2"
+            >
               Search Items
             </label>
             <input
               id="search"
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search menu items..."
               className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors"
             />
@@ -88,4 +96,4 @@ export default function MenuPage() {
       </div>
     </div>
   );
-} 
+}

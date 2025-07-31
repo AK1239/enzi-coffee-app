@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useMenuStore } from '../store';
+import { useMenuStore, useCartStore } from '../store';
 import { MenuItem } from '../types';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -55,8 +55,9 @@ export default function MenuGrid({
     if (onAddToCart) {
       onAddToCart(item);
     } else {
-      // Placeholder for when cart store is implemented
-      console.log('Add to cart:', item);
+      // Use cart store directly
+      const { addItem } = useCartStore.getState();
+      addItem(item);
     }
   };
 

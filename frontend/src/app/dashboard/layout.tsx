@@ -7,7 +7,9 @@ import {
   LoadingSpinner,
   Sidebar,
   Header,
+  Cart,
 } from '../../components';
+import { useCartStore } from '../../store';
 
 export default function DashboardLayout({
   children,
@@ -16,6 +18,7 @@ export default function DashboardLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, isLoading } = useAuth({ requireAuth: true });
+  const { isOpen, toggleCart, getItemCount } = useCartStore();
 
   if (isLoading) {
     return (
@@ -46,6 +49,9 @@ export default function DashboardLayout({
             <div className="max-w-7xl mx-auto">{children}</div>
           </main>
         </div>
+
+        {/* Cart Component */}
+        <Cart />
       </div>
     </ProtectedRoute>
   );
