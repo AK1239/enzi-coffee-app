@@ -20,5 +20,8 @@ export { default as ProtectedRoute } from './auth/ProtectedRoute';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as AuthProvider } from './AuthProvider';
 
+// Menu components
+export { default as MenuGrid } from './MenuGrid';
+
 // Dashboard components
 export * from './dashboard';
