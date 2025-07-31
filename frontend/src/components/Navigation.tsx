@@ -25,7 +25,9 @@ export default function Navigation() {
           <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-1">
             <div className="relative flex-shrink-0">
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-300">
-                <span className="text-white text-lg sm:text-xl font-bold">☕</span>
+                <span className="text-white text-lg sm:text-xl font-bold">
+                  ☕
+                </span>
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-300 to-orange-400 rounded-2xl blur opacity-50 animate-pulse"></div>
               </div>
             </div>
@@ -55,7 +57,7 @@ export default function Navigation() {
                 </Link>
                 <Link
                   href="/dashboard/sales"
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors mr-8 ${
                     pathname === '/dashboard/sales'
                       ? 'bg-amber-800/50 text-white backdrop-blur-xl'
                       : 'text-amber-100 hover:bg-amber-800/50 hover:text-white backdrop-blur-xl'
@@ -89,7 +91,9 @@ export default function Navigation() {
             <div className="flex items-center space-x-2 sm:space-x-4">
               <div className="text-xs sm:text-sm hidden sm:block">
                 <span className="text-amber-200">Welcome, </span>
-                <span className="font-medium text-white truncate">{user.name}</span>
+                <span className="font-medium text-white truncate">
+                  {user.name}
+                </span>
               </div>
               <button
                 onClick={handleLogout}
