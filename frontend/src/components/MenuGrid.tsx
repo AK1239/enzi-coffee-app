@@ -30,8 +30,10 @@ export default function MenuGrid({
 
   // Fetch menu items on component mount
   useEffect(() => {
-    fetchMenuItems();
-  }, [fetchMenuItems]);
+    if (items.length === 0) {
+      fetchMenuItems();
+    }
+  }, []); // Empty dependency array to run only once
 
   // Filter items based on category and search query
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function MenuGrid({
     }
 
     setFilteredItems(filtered);
-  }, [items, selectedCategory, searchQuery, getItemsByCategory, searchItems]);
+  }, [items, selectedCategory, searchQuery]); // Remove function dependencies
 
   // Handle add to cart
   const handleAddToCart = (item: MenuItem) => {
