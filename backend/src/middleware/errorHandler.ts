@@ -84,8 +84,8 @@ export const errorHandler = (
     statusCode = 400;
     message = 'Validation failed';
     errors = {};
-    
-    error.errors.forEach((err) => {
+
+    (error as any).errors.forEach((err: any) => {
       const field = err.path.join('.');
       if (!errors![field]) {
         errors![field] = [];
@@ -160,4 +160,4 @@ export const notFoundHandler = (req: Request, res: Response) => {
     message: `Route ${req.originalUrl} not found`,
     error: 'NOT_FOUND',
   });
-}; 
+};

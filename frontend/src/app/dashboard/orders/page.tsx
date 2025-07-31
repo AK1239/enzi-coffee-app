@@ -1,14 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '../../../hooks';
 import { useOrdersStore } from '../../../store';
-import { LoadingSpinner, OrdersTable } from '../../../components';
+import { LoadingSpinner, OrdersTable, ErrorDisplay } from '../../../components';
 import { formatCurrency, formatDate } from '../../../utils/formatters';
 import { Order } from '../../../types';
 
 export default function OrdersPage() {
-  const { user } = useAuth({ requireAuth: true });
   const {
     orders,
     dailyOrders,
@@ -63,16 +61,12 @@ export default function OrdersPage() {
 
   if (error) {
     return (
-      <div className="text-center p-8">
-        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-6">
-          <p className="text-red-400 font-medium mb-4">{error}</p>
-          <button
-            onClick={handleRetry}
-            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
+      <div className="p-8">
+        <ErrorDisplay
+          error={error}
+          title="Failed to Load Orders"
+          onRetry={handleRetry}
+        />
       </div>
     );
   }
@@ -99,7 +93,7 @@ export default function OrdersPage() {
               <div className="text-2xl font-bold text-white">
                 {formatCurrency(dailySummary.totalAmount)}
               </div>
-              <div className="text-slate-300 text-sm">Today's Revenue</div>
+              <div className="text-slate-300 text-sm">Today&apos;s Revenue</div>
             </div>
           )}
         </div>
@@ -126,7 +120,7 @@ export default function OrdersPage() {
                 : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
             }`}
           >
-            Today's Orders ({dailyOrders.length})
+            Today&apos;s Orders ({dailyOrders.length})
           </button>
         </div>
       </div>
@@ -162,7 +156,7 @@ export default function OrdersPage() {
       {/* Orders Table */}
       <OrdersTable
         orders={filteredOrders}
-        title={activeTab === 'all' ? 'All Orders' : "Today's Orders"}
+        title={activeTab === 'all' ? 'All Orders' : 'Today&apos;s Orders'}
         formatCurrency={formatCurrency}
         formatDate={formatDate}
         emptyMessage={

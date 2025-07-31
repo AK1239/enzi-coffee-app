@@ -29,5 +29,12 @@ export { default as Cart } from './Cart';
 // Order components
 export { default as OrderModal } from './OrderModal';
 
+// Error components
+export { default as ErrorDisplay, NetworkError, ValidationError, ServerError, AuthError } from './ErrorDisplay';
+export { ErrorBoundary, withErrorBoundary } from './ErrorBoundary';
+
+// Toast components
+export { ToastProvider, useToast } from './Toast';
+
 // Dashboard components
 export * from './dashboard';

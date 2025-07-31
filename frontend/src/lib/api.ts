@@ -59,26 +59,25 @@ api.interceptors.response.use(
       });
     }
 
-    // Handle server errors
-    const errorMessage =
-      error.response?.data?.message ||
-      error.response?.data?.error ||
-      error.response?.data?.errors?.[0] ||
-      'An unexpected error occurred';
+    // Extract error information
+    const errorData = error.response?.data;
+    const errorMessage = errorData?.message || 'An unexpected error occurred';
+    const validationErrors = errorData?.errors || {};
 
     // Log detailed error information for debugging
     console.error('API Error:', {
       status: error.response?.status,
       message: errorMessage,
-      data: error.response?.data,
+      data: errorData,
       url: error.config?.url,
-      headers: error.config?.headers,
+      method: error.config?.method,
     });
 
     return Promise.reject({
       message: errorMessage,
       status: error.response?.status,
-      data: error.response?.data,
+      data: errorData,
+      errors: validationErrors,
     });
   }
 );
