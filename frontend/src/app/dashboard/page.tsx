@@ -214,8 +214,8 @@ export default function DashboardPage() {
         isOpen={showOrderModal}
         onClose={() => setShowOrderModal(false)}
         onSuccess={orderId => {
+          // Optionally: show a toast, but DO NOT close the modal here!
           console.log('Order submitted successfully:', orderId);
-          setShowOrderModal(false);
         }}
       />
     </div>
