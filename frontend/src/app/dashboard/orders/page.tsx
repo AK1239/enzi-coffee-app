@@ -118,64 +118,78 @@ export default function OrdersPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {/* Page Header with improved mobile layout */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-white">Orders Management</h1>
-          <p className="text-slate-300 mt-2">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white truncate">
+            Orders Management
+          </h1>
+          <p className="text-slate-300 mt-2 text-sm sm:text-base">
             Manage and view all customer orders
           </p>
         </div>
 
-        {/* Quick Stats */}
-        <div className="flex gap-4 mt-4 sm:mt-0">
-          <div className="bg-slate-700/50 backdrop-blur-xl rounded-lg p-4 border border-slate-600/50">
-            <div className="text-2xl font-bold text-white">{orders.length}</div>
-            <div className="text-slate-300 text-sm">Total Orders</div>
+        {/* Quick Stats with improved mobile layout */}
+        <div className="flex gap-3 sm:gap-4 mt-4 sm:mt-0">
+          <div className="bg-slate-700/50 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-slate-600/50 flex-1 sm:flex-none">
+            <div className="text-xl sm:text-2xl font-bold text-white">
+              {orders.length}
+            </div>
+            <div className="text-slate-300 text-xs sm:text-sm">
+              Total Orders
+            </div>
           </div>
           {dailySummary && (
-            <div className="bg-slate-700/50 backdrop-blur-xl rounded-lg p-4 border border-slate-600/50">
-              <div className="text-2xl font-bold text-white">
+            <div className="bg-slate-700/50 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-slate-600/50 flex-1 sm:flex-none">
+              <div className="text-xl sm:text-2xl font-bold text-white">
                 {formatCurrency(dailySummary.totalAmount)}
               </div>
-              <div className="text-slate-300 text-sm">Today&apos;s Revenue</div>
+              <div className="text-slate-300 text-xs sm:text-sm">
+                Today&apos;s Revenue
+              </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* Tab Navigation */}
+      {/* Tab Navigation with improved mobile layout */}
       <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-1">
         <div className="flex space-x-1">
           <button
             onClick={() => setActiveTab('all')}
-            className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`flex-1 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors touch-manipulation ${
               activeTab === 'all'
                 ? 'bg-amber-500 text-white shadow-lg'
                 : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
             }`}
+            style={{ minHeight: '44px' }}
           >
-            All Orders ({orders.length})
+            <span className="hidden sm:inline">All Orders</span>
+            <span className="sm:hidden">All</span>
+            <span className="ml-1">({orders.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('today')}
-            className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`flex-1 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors touch-manipulation ${
               activeTab === 'today'
                 ? 'bg-amber-500 text-white shadow-lg'
                 : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
             }`}
+            style={{ minHeight: '44px' }}
           >
-            Today&apos;s Orders ({dailyOrders.length})
+            <span className="hidden sm:inline">Today&apos;s Orders</span>
+            <span className="sm:hidden">Today</span>
+            <span className="ml-1">({dailyOrders.length})</span>
           </button>
         </div>
       </div>
 
-      {/* Search Bar */}
-      <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
+      {/* Search Bar with improved mobile layout */}
+      <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-3 sm:p-4">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg
-              className="h-5 w-5 text-slate-400"
+              className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -193,7 +207,8 @@ export default function OrdersPage() {
             placeholder="Search orders by ID or item name..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="block w-full pl-10 pr-3 py-2 border border-slate-600/50 rounded-lg bg-slate-700/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            className="block w-full pl-9 sm:pl-10 pr-3 py-2 sm:py-3 border border-slate-600/50 rounded-lg bg-slate-700/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-sm sm:text-base"
+            style={{ minHeight: '44px' }}
           />
         </div>
       </div>

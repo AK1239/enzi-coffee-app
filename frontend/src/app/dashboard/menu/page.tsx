@@ -62,18 +62,18 @@ export default function MenuPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {/* Page Header with improved mobile layout */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-white">Menu Management</h1>
-          <p className="text-slate-300 mt-2">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white truncate">Menu Management</h1>
+          <p className="text-slate-300 mt-2 text-sm sm:text-base">
             Browse and manage your coffee menu items
           </p>
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700/50">
+      {/* Filters with improved mobile layout */}
+      <div className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-4 sm:p-6 border border-slate-700/50">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Category Filter */}
           <div>
@@ -87,7 +87,8 @@ export default function MenuPage() {
               id="category"
               value={selectedCategory}
               onChange={e => setSelectedCategory(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors"
+              className="w-full px-3 py-2 sm:py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm sm:text-base"
+              style={{ minHeight: '44px' }}
             >
               <option value="">All Categories</option>
               <option value="hot">Hot Drinks</option>
@@ -110,7 +111,8 @@ export default function MenuPage() {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search menu items..."
-              className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors"
+              className="w-full px-3 py-2 sm:py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm sm:text-base"
+              style={{ minHeight: '44px' }}
             />
           </div>
         </div>
@@ -123,7 +125,8 @@ export default function MenuPage() {
                 setSelectedCategory('');
                 setSearchQuery('');
               }}
-              className="text-sm text-amber-400 hover:text-amber-300 font-medium transition-colors"
+              className="text-sm text-amber-400 hover:text-amber-300 font-medium transition-colors touch-manipulation"
+              style={{ minHeight: '44px', minWidth: '44px' }}
             >
               Clear all filters
             </button>
@@ -131,8 +134,8 @@ export default function MenuPage() {
         )}
       </div>
 
-      {/* Menu Grid */}
-      <div className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700/50">
+      {/* Menu Grid with improved mobile layout */}
+      <div className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-4 sm:p-6 border border-slate-700/50">
         <MenuGrid
           onAddToCart={handleAddToCart}
           selectedCategory={selectedCategory || undefined}

@@ -45,25 +45,79 @@ export default function OrdersTable({
 
   return (
     <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl overflow-hidden">
-      <div className="px-6 py-4 border-b border-slate-700/50">
-        <h3 className="text-lg font-semibold text-white">
+      <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-700/50">
+        <h3 className="text-base sm:text-lg font-semibold text-white">
           {title} ({orders.length})
         </h3>
       </div>
-      <div className="overflow-x-auto">
+      
+      {/* Mobile Card Layout */}
+      <div className="block sm:hidden">
+        <div className="space-y-3 p-4">
+          {orders.map(order => (
+            <div
+              key={order.id}
+              className={`bg-slate-700/30 rounded-lg p-4 border border-slate-600/50 hover:bg-slate-700/50 transition-colors ${
+                onOrderClick ? 'cursor-pointer' : ''
+              }`}
+              onClick={() => onOrderClick?.(order)}
+            >
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-sm font-medium text-white truncate">
+                    Order #{order.id.slice(0, 8)}...
+                  </h4>
+                  <p className="text-xs text-slate-400 mt-1">
+                    {formatDate(order.createdAt)}
+                  </p>
+                </div>
+                <div className="text-right ml-3">
+                  <p className="text-sm font-semibold text-green-400">
+                    {formatCurrency(order.totalAmount)}
+                  </p>
+                  <p className="text-xs text-slate-400">
+                    {order.itemCount} items
+                  </p>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                {order.items.slice(0, 3).map((item, index) => (
+                  <div key={index} className="flex justify-between text-xs">
+                    <span className="text-slate-300 truncate flex-1 mr-2">
+                      {item.name}
+                    </span>
+                    <span className="text-slate-400 flex-shrink-0">
+                      x{item.quantity}
+                    </span>
+                  </div>
+                ))}
+                {order.items.length > 3 && (
+                  <p className="text-xs text-slate-500 italic">
+                    +{order.items.length - 3} more items
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop Table Layout */}
+      <div className="hidden sm:block overflow-x-auto">
         <table className="w-full">
           <thead className="bg-slate-700/30">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                 Order ID
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                 Items
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                 Total
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+              <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                 {title.includes('Today') ? 'Time' : 'Date'}
               </th>
             </tr>
@@ -77,23 +131,23 @@ export default function OrdersTable({
                 }`}
                 onClick={() => onOrderClick?.(order)}
               >
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-slate-300">
                   {order.id.slice(0, 8)}...
                 </td>
-                <td className="px-6 py-4 text-sm text-slate-300">
+                <td className="px-4 sm:px-6 py-4 text-sm text-slate-300">
                   <div className="space-y-1">
                     {order.items.map((item, index) => (
                       <div key={index} className="flex justify-between">
-                        <span>{item.name}</span>
-                        <span className="text-slate-400">x{item.quantity}</span>
+                        <span className="truncate flex-1 mr-2">{item.name}</span>
+                        <span className="text-slate-400 flex-shrink-0">x{item.quantity}</span>
                       </div>
                     ))}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
+                <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                   {formatCurrency(order.totalAmount)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
+                <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-slate-400">
                   {formatDate(order.createdAt)}
                 </td>
               </tr>

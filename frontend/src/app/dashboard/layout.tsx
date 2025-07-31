@@ -49,8 +49,8 @@ export default function DashboardLayout({
         <div className="flex-1 lg:ml-0">
           <Header setSidebarOpen={setSidebarOpen} user={user} />
 
-          {/* Page Content */}
-          <main className="p-6">
+          {/* Page Content with improved mobile spacing */}
+          <main className="p-4 sm:p-6">
             <div className="max-w-7xl mx-auto">{children}</div>
           </main>
         </div>

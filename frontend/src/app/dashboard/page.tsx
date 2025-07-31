@@ -3,7 +3,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks';
 import { useMenuStore, useCartStore, useLoadingStore } from '../../store';
-import { MenuGrid, OrderModal, LoadingSpinner, SkeletonCard, SkeletonStats } from '../../components';
+import {
+  MenuGrid,
+  OrderModal,
+  LoadingSpinner,
+  SkeletonCard,
+  SkeletonStats,
+} from '../../components';
 import { MenuItem } from '../../types';
 
 export default function DashboardPage() {
@@ -104,7 +110,10 @@ export default function DashboardPage() {
               </div>
               <div className="space-y-4">
                 {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="flex items-center justify-between p-3 bg-slate-600/30 rounded-lg">
+                  <div
+                    key={i}
+                    className="flex items-center justify-between p-3 bg-slate-600/30 rounded-lg"
+                  >
                     <div className="flex-1">
                       <div className="h-4 bg-slate-600/50 rounded w-24 mb-1 animate-pulse"></div>
                       <div className="h-3 bg-slate-600/50 rounded w-16 animate-pulse"></div>
@@ -140,38 +149,44 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header with improved mobile layout */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-white">POS Dashboard</h1>
-          <p className="text-slate-300 mt-2">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white truncate">
+            POS Dashboard
+          </h1>
+          <p className="text-slate-300 mt-2 text-sm sm:text-base">
             Welcome back, {user?.name || 'User'}. Ready to take orders?
           </p>
         </div>
 
-        {/* Quick Stats */}
-        <div className="flex gap-4 mt-4 sm:mt-0">
-          <div className="bg-slate-700/50 backdrop-blur-xl rounded-lg p-4 border border-slate-600/50">
-            <div className="text-2xl font-bold text-white">{items.length}</div>
-            <div className="text-slate-300 text-sm">Menu Items</div>
+        {/* Quick Stats with improved mobile layout */}
+        <div className="flex gap-3 sm:gap-4 mt-4 sm:mt-0">
+          <div className="bg-slate-700/50 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-slate-600/50 flex-1 sm:flex-none">
+            <div className="text-xl sm:text-2xl font-bold text-white">
+              {items.length}
+            </div>
+            <div className="text-slate-300 text-xs sm:text-sm">Menu Items</div>
           </div>
-          <div className="bg-slate-700/50 backdrop-blur-xl rounded-lg p-4 border border-slate-600/50">
-            <div className="text-2xl font-bold text-white">
+          <div className="bg-slate-700/50 backdrop-blur-xl rounded-lg p-3 sm:p-4 border border-slate-600/50 flex-1 sm:flex-none">
+            <div className="text-xl sm:text-2xl font-bold text-white">
               {cartItems.length}
             </div>
-            <div className="text-slate-300 text-sm">Cart Items</div>
+            <div className="text-slate-300 text-xs sm:text-sm">Cart Items</div>
           </div>
         </div>
       </div>
 
       {/* Main Content - Menu Grid and Cart Side by Side */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Menu Grid - Takes up 2/3 of the space */}
         <div className="lg:col-span-2">
-          <div className="bg-slate-700/50 backdrop-blur-xl rounded-xl p-6 border border-slate-600/50">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-white">Menu</h2>
-              <div className="text-slate-300 text-sm">
+          <div className="bg-slate-700/50 backdrop-blur-xl rounded-xl p-4 sm:p-6 border border-slate-600/50">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-white">
+                Menu
+              </h2>
+              <div className="text-slate-300 text-xs sm:text-sm">
                 {items.length} items available
               </div>
             </div>
@@ -182,29 +197,30 @@ export default function DashboardPage() {
 
         {/* Cart Sidebar - Takes up 1/3 of the space */}
         <div className="lg:col-span-1">
-          <div className="bg-slate-700/50 backdrop-blur-xl rounded-xl p-6 border border-slate-600/50 sticky top-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-white">
+          <div className="bg-slate-700/50 backdrop-blur-xl rounded-xl p-4 sm:p-6 border border-slate-600/50 sticky top-6">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-white">
                 Current Order
               </h2>
               {cartItems.length > 0 && (
                 <button
                   onClick={() => clearCart()}
-                  className="text-red-400 hover:text-red-300 text-sm transition-colors"
+                  className="text-red-400 hover:text-red-300 text-xs sm:text-sm transition-colors touch-manipulation"
+                  style={{ minWidth: '44px', minHeight: '44px' }}
                 >
                   Clear All
                 </button>
               )}
             </div>
 
-            {/* Cart Items */}
-            <div className="space-y-4 mb-6">
+            {/* Cart Items with improved mobile layout */}
+            <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
               {cartItems.length === 0 ? (
-                <div className="text-center py-8">
-                  <div className="text-slate-400 text-lg mb-2">
+                <div className="text-center py-6 sm:py-8">
+                  <div className="text-slate-400 text-base sm:text-lg mb-2">
                     Cart is empty
                   </div>
-                  <div className="text-slate-500 text-sm">
+                  <div className="text-slate-500 text-xs sm:text-sm">
                     Add items from the menu to get started
                   </div>
                 </div>
@@ -214,36 +230,41 @@ export default function DashboardPage() {
                     key={item.id}
                     className="flex items-center justify-between p-3 bg-slate-600/30 rounded-lg"
                   >
-                    <div className="flex-1">
-                      <div className="font-medium text-white">{item.name}</div>
-                      <div className="text-slate-300 text-sm">
+                    <div className="flex-1 min-w-0 mr-3">
+                      <div className="font-medium text-white text-sm sm:text-base truncate">
+                        {item.name}
+                      </div>
+                      <div className="text-slate-300 text-xs sm:text-sm">
                         ${item.price.toFixed(2)} each
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                       <button
                         onClick={() =>
                           updateQuantity(item.id, item.quantity - 1)
                         }
-                        className="w-8 h-8 bg-slate-600 hover:bg-slate-500 rounded-full flex items-center justify-center text-white transition-colors"
+                        className="w-8 h-8 sm:w-8 sm:h-8 bg-slate-600 hover:bg-slate-500 rounded-full flex items-center justify-center text-white transition-colors touch-manipulation"
                         disabled={item.quantity <= 1}
+                        style={{ minWidth: '32px', minHeight: '32px' }}
                       >
                         -
                       </button>
-                      <span className="w-8 text-center text-white font-medium">
+                      <span className="w-8 text-center text-white font-medium text-sm sm:text-base">
                         {item.quantity}
                       </span>
                       <button
                         onClick={() =>
                           updateQuantity(item.id, item.quantity + 1)
                         }
-                        className="w-8 h-8 bg-slate-600 hover:bg-slate-500 rounded-full flex items-center justify-center text-white transition-colors"
+                        className="w-8 h-8 sm:w-8 sm:h-8 bg-slate-600 hover:bg-slate-500 rounded-full flex items-center justify-center text-white transition-colors touch-manipulation"
+                        style={{ minWidth: '32px', minHeight: '32px' }}
                       >
                         +
                       </button>
                       <button
                         onClick={() => removeItem(item.id)}
-                        className="ml-2 text-red-400 hover:text-red-300 transition-colors"
+                        className="ml-1 sm:ml-2 text-red-400 hover:text-red-300 transition-colors touch-manipulation p-1"
+                        style={{ minWidth: '32px', minHeight: '32px' }}
                       >
                         ×
                       </button>
@@ -253,22 +274,27 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Order Summary */}
+            {/* Order Summary with improved mobile layout */}
             {cartItems.length > 0 && (
               <div className="border-t border-slate-600/50 pt-4">
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-slate-300">Subtotal:</span>
-                  <span className="text-white font-semibold">
+                  <span className="text-slate-300 text-sm sm:text-base">
+                    Subtotal:
+                  </span>
+                  <span className="text-white font-semibold text-sm sm:text-base">
                     ${getTotal().toFixed(2)}
                   </span>
                 </div>
 
                 <button
                   onClick={() => setShowOrderModal(true)}
-                  className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors"
+                  className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors touch-manipulation"
                   disabled={cartItems.length === 0}
+                  style={{ minHeight: '44px' }}
                 >
-                  Place Order (${getTotal().toFixed(2)})
+                  <span className="text-sm sm:text-base">
+                    Place Order (${getTotal().toFixed(2)})
+                  </span>
                 </button>
               </div>
             )}

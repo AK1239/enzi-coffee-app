@@ -120,24 +120,26 @@ export default function Sidebar({
 
   return (
     <>
-      {/* Mobile sidebar overlay */}
+      {/* Mobile sidebar overlay with improved touch handling */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
+          style={{ touchAction: 'none' }}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar with improved responsive design */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 lg:inset-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-72 sm:w-80 bg-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 lg:inset-0 lg:w-64 xl:w-72 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
+        style={{ touchAction: 'pan-y' }}
       >
-        {/* Sidebar Header */}
-        <div className="flex items-center justify-between h-16 px-6 border-b border-slate-700/50">
-          <Link href="/dashboard" className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center shadow-lg">
+        {/* Sidebar Header with improved mobile spacing */}
+        <div className="flex items-center justify-between h-16 sm:h-20 px-4 sm:px-6 border-b border-slate-700/50">
+          <Link href="/dashboard" className="flex items-center space-x-3 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center shadow-lg flex-shrink-0">
               <svg
                 className="w-5 h-5 text-white"
                 fill="currentColor"
@@ -150,15 +152,18 @@ export default function Sidebar({
                 />
               </svg>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
-              Enzi Coffee
-            </span>
+            <div className="min-w-0 flex-1">
+              <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent truncate block">
+                Enzi Coffee
+              </span>
+            </div>
           </Link>
 
-          {/* Close button for mobile */}
+          {/* Close button for mobile with improved touch target */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors"
+            className="lg:hidden p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors touch-manipulation"
+            style={{ minWidth: '44px', minHeight: '44px' }}
           >
             <svg
               className="w-5 h-5 text-slate-300"
@@ -176,9 +181,9 @@ export default function Sidebar({
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="mt-8 px-4">
-          <div className="space-y-1">
+        {/* Navigation with improved mobile spacing and touch targets */}
+        <nav className="mt-6 sm:mt-8 px-3 sm:px-4 flex-1 overflow-y-auto">
+          <div className="space-y-2">
             {navigationItems.map(item => {
               const isActive = pathname === item.href;
               return (
@@ -186,14 +191,15 @@ export default function Sidebar({
                   key={item.name}
                   href={item.href}
                   onClick={handleNavigation}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
+                  className={`flex items-center space-x-3 px-3 sm:px-4 py-3 sm:py-4 rounded-xl transition-all duration-200 group touch-manipulation ${
                     isActive
                       ? 'bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-400/30 text-amber-300 shadow-lg'
-                      : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
+                      : 'text-slate-300 hover:bg-slate-800/50 hover:text-white active:bg-slate-700/50'
                   }`}
+                  style={{ minHeight: '48px' }}
                 >
                   <div
-                    className={`transition-colors duration-200 ${
+                    className={`transition-colors duration-200 flex-shrink-0 ${
                       isActive
                         ? 'text-amber-400'
                         : 'text-slate-400 group-hover:text-white'
@@ -201,9 +207,11 @@ export default function Sidebar({
                   >
                     {item.icon}
                   </div>
-                  <span className="font-medium">{item.name}</span>
+                  <span className="font-medium text-sm sm:text-base truncate flex-1">
+                    {item.name}
+                  </span>
                   {isActive && (
-                    <div className="ml-auto w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+                    <div className="ml-auto w-2 h-2 bg-amber-400 rounded-full animate-pulse flex-shrink-0" />
                   )}
                 </Link>
               );
@@ -211,27 +219,28 @@ export default function Sidebar({
           </div>
         </nav>
 
-        {/* User Profile Section */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700/50">
-          <div className="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 backdrop-blur-xl">
-            <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
-              <span className="text-white font-semibold text-sm">
+        {/* User Profile Section with improved mobile layout */}
+        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 border-t border-slate-700/50">
+          <div className="flex items-center space-x-3 p-3 sm:p-4 rounded-xl bg-slate-800/50 backdrop-blur-xl">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
+              <span className="text-white font-semibold text-sm sm:text-base">
                 {user?.name?.charAt(0).toUpperCase()}
               </span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">
+              <p className="text-sm sm:text-base font-medium text-white truncate">
                 {user?.name}
               </p>
-              <p className="text-xs text-slate-400 truncate">{user?.email}</p>
+              <p className="text-xs sm:text-sm text-slate-400 truncate">{user?.email}</p>
             </div>
             <button
               onClick={handleLogout}
-              className="p-2 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 transition-colors"
+              className="p-2 sm:p-3 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 transition-colors touch-manipulation"
               title="Logout"
+              style={{ minWidth: '44px', minHeight: '44px' }}
             >
               <svg
-                className="w-4 h-4"
+                className="w-4 h-4 sm:w-5 sm:h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

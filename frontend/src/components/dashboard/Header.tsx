@@ -29,11 +29,12 @@ export default function Header({ setSidebarOpen, user }: HeaderProps) {
 
   return (
     <header className="bg-slate-900/95 backdrop-blur-xl border-b border-slate-700/50 shadow-lg">
-      <div className="flex items-center justify-between h-16 px-6">
-        {/* Mobile menu button */}
+      <div className="flex items-center justify-between h-16 sm:h-20 px-4 sm:px-6">
+        {/* Mobile menu button with improved touch target */}
         <button
           onClick={() => setSidebarOpen(true)}
-          className="lg:hidden p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors"
+          className="lg:hidden p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors touch-manipulation"
+          style={{ minWidth: '44px', minHeight: '44px' }}
         >
           <svg
             className="w-6 h-6 text-slate-300"
@@ -50,26 +51,29 @@ export default function Header({ setSidebarOpen, user }: HeaderProps) {
           </svg>
         </button>
 
-        {/* Page Title */}
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
-            <h1 className="text-2xl font-bold text-white">{currentPage}</h1>
+        {/* Page Title with improved responsive layout */}
+        <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-1 lg:flex-none">
+          <div className="flex items-center space-x-2 min-w-0">
+            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">
+              {currentPage}
+            </h1>
             {isNavigating && (
-              <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
             )}
           </div>
-          <div className="hidden sm:block w-px h-6 bg-slate-600" />
-          <p className="hidden sm:block text-sm text-slate-400">
+          <div className="hidden sm:block w-px h-6 bg-slate-600 flex-shrink-0" />
+          <p className="hidden sm:block text-sm text-slate-400 truncate flex-shrink-0">
             Welcome back, {user?.name}
           </p>
         </div>
 
-        {/* Header Actions */}
-        <div className="flex items-center space-x-3">
-          {/* Cart Button */}
+        {/* Header Actions with improved mobile layout */}
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          {/* Cart Button with improved touch target */}
           <button
             onClick={toggleCart}
-            className="relative p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white transition-colors"
+            className="relative p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white transition-colors touch-manipulation"
+            style={{ minWidth: '44px', minHeight: '44px' }}
           >
             <svg
               className="w-5 h-5"
@@ -91,8 +95,11 @@ export default function Header({ setSidebarOpen, user }: HeaderProps) {
             )}
           </button>
 
-          {/* Notifications */}
-          <button className="p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white transition-colors">
+          {/* Notifications with improved touch target */}
+          <button 
+            className="p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white transition-colors touch-manipulation"
+            style={{ minWidth: '44px', minHeight: '44px' }}
+          >
             <svg
               className="w-5 h-5"
               fill="none"
@@ -114,9 +121,10 @@ export default function Header({ setSidebarOpen, user }: HeaderProps) {
             </svg>
           </button>
 
-          {/* Quick Actions */}
-          <button className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all duration-300 font-medium shadow-lg">
-            New Order
+          {/* Quick Actions with improved responsive text */}
+          <button className="px-3 sm:px-4 py-2 sm:py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all duration-300 font-medium shadow-lg touch-manipulation text-sm sm:text-base">
+            <span className="hidden sm:inline">New Order</span>
+            <span className="sm:hidden">+</span>
           </button>
         </div>
       </div>

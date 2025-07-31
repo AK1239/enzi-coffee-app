@@ -89,11 +89,13 @@ export default function SalesDashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <SalesHeader
-        selectedDate={selectedDate}
-        onDateChange={handleDateChange}
-      />
+      {/* Page Header with improved mobile layout */}
+      <div className="space-y-4 sm:space-y-6">
+        <SalesHeader
+          selectedDate={selectedDate}
+          onDateChange={handleDateChange}
+        />
+      </div>
 
       {/* Daily Sales Summary Cards */}
       {dailySummary && (
