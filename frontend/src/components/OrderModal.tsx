@@ -39,13 +39,13 @@ export default function OrderModal({
       // Prepare order data
       const orderData = {
         items: items.map(item => ({
-          id: item.id.toString(),
+          id: item.id, // Send as number, not string
           name: item.name,
           price: item.price,
           quantity: item.quantity,
         })),
         totalAmount: getTotal(),
-        itemCount: getItemCount(),
+        itemCount: getItemCount(), // This is already the total quantity from cart store
       };
 
       // Submit order to backend
