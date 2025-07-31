@@ -69,3 +69,10 @@ export interface ApiResponse<T = any> {
   error?: string;
   errors?: Record<string, string[]>;
 }
+
+export interface DailySummary {
+  totalOrders: number;
+  totalAmount: number;
+  totalItems: number;
+  date: string;
+}
