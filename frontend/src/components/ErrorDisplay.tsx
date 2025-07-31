@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ErrorType,
   getErrorType,
   getErrorIcon,
   getErrorColorClass,
@@ -32,7 +31,7 @@ export default function ErrorDisplay({
   // Get error message
   let errorMessage = 'An unexpected error occurred';
   if (typeof error === 'object' && error !== null) {
-    const apiError = error as any;
+    const apiError = error as { message?: string };
     errorMessage = apiError.message || errorMessage;
   } else if (typeof error === 'string') {
     errorMessage = error;

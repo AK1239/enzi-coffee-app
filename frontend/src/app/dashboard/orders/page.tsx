@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useOrdersStore, useLoadingStore } from '../../../store';
 import {
-  LoadingSpinner,
   OrdersTable,
   ErrorDisplay,
   SkeletonTable,

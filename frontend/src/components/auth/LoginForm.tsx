@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Link from 'next/link';
 import { LoginCredentials } from '../../types';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { useNavigationWithLoading } from '../../hooks';

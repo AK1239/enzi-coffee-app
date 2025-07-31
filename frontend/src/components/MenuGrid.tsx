@@ -37,7 +37,7 @@ export default function MenuGrid({
         setMenuLoading(false);
       });
     }
-  }, []); // Empty dependency array to run only once
+  }, [items.length, fetchMenuItems, setMenuLoading]);
 
   // Filter items based on category and search query
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function MenuGrid({
     }
 
     setFilteredItems(filtered);
-  }, [items, selectedCategory, searchQuery]); // Remove function dependencies
+  }, [items, selectedCategory, searchQuery, getItemsByCategory, searchItems]);
 
   // Handle add to cart
   const handleAddToCart = (item: MenuItem) => {

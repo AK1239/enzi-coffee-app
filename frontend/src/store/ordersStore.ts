@@ -25,7 +25,7 @@ interface OrdersState {
   setLoading: (loading: boolean) => void;
 }
 
-export const useOrdersStore = create<OrdersState>((set, get) => ({
+export const useOrdersStore = create<OrdersState>((set) => ({
   // Initial state
   orders: [],
   dailyOrders: [],
@@ -59,10 +59,11 @@ export const useOrdersStore = create<OrdersState>((set, get) => ({
         });
         return false;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching daily orders:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch daily orders';
       set({
-        error: error.message || 'Failed to fetch daily orders',
+        error: errorMessage,
         isLoading: false,
       });
       return false;
@@ -97,10 +98,11 @@ export const useOrdersStore = create<OrdersState>((set, get) => ({
         });
         return false;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching orders:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch orders';
       set({
-        error: error.message || 'Failed to fetch orders',
+        error: errorMessage,
         isLoading: false,
       });
       return false;

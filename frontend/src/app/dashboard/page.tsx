@@ -8,7 +8,6 @@ import {
   OrderModal,
   LoadingSpinner,
   SkeletonCard,
-  SkeletonStats,
 } from '../../components';
 import { MenuItem } from '../../types';
 
@@ -26,7 +25,6 @@ export default function DashboardPage() {
   const { isAuthenticated } = useAuthStore();
 
   const [showOrderModal, setShowOrderModal] = useState(false);
-  const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
 
   // Fetch menu data when authenticated and items are empty
@@ -52,28 +50,7 @@ export default function DashboardPage() {
     addItem(item);
   };
 
-  // Handle order submission
-  const handleSubmitOrder = async () => {
-    if (cartItems.length === 0) return;
 
-    setIsSubmittingOrder(true);
-    try {
-      // Here you would typically call your API to submit the order
-      // For now, we'll simulate the process
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Clear cart after successful order
-      clearCart();
-      setShowOrderModal(false);
-
-      // You could show a success message here
-      console.log('Order submitted successfully');
-    } catch (error) {
-      console.error('Error submitting order:', error);
-    } finally {
-      setIsSubmittingOrder(false);
-    }
-  };
 
   // Show initialization loading for dashboard
   if (isInitializing) {

@@ -3,7 +3,6 @@
 import React from 'react';
 import { useSalesDashboard } from '../../../hooks';
 import {
-  LoadingSpinner,
   SkeletonStats,
   SkeletonTable,
 } from '../../../components';

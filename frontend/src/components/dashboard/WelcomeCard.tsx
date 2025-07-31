@@ -15,7 +15,7 @@ export default function WelcomeCard({ userName }: WelcomeCardProps) {
             !
           </h2>
           <p className="text-slate-300 text-lg">
-            Here's what's happening with your coffee shop today.
+            Here&apos;s what&apos;s happening with your coffee shop today.
           </p>
         </div>
         <div className="hidden md:block">

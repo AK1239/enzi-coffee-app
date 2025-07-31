@@ -11,7 +11,7 @@ export function isTokenExpired(token: string): boolean {
     const currentTime = Math.floor(Date.now() / 1000);
     
     return payload.exp < currentTime;
-  } catch (error) {
+  } catch {
     // If we can't parse the token, consider it expired/invalid
     return true;
   }
@@ -24,7 +24,7 @@ export function getTokenExpiration(token: string): Date | null {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
     return new Date(payload.exp * 1000);
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -39,7 +39,7 @@ export function isTokenExpiringSoon(token: string, thresholdMinutes: number = 60
     const thresholdSeconds = thresholdMinutes * 60;
     
     return (payload.exp - currentTime) < thresholdSeconds;
-  } catch (error) {
+  } catch {
     return true;
   }
 }
@@ -64,7 +64,7 @@ export function isValidTokenFormat(token: string): boolean {
       atob(part);
     });
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -80,7 +80,7 @@ export function extractUserFromToken(token: string): { userId?: string; email?: 
       email: payload.email,
       name: payload.name,
     };
-  } catch (error) {
+  } catch {
     return null;
   }
 } 

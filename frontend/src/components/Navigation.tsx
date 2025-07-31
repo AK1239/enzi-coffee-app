@@ -2,7 +2,6 @@
 
 import { useAuthStore } from '../store/authStore';
 import { useNavigationWithLoading } from '../hooks';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function Navigation() {

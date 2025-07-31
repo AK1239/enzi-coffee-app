@@ -18,7 +18,6 @@ export default function DashboardLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, isLoading } = useAuth({ requireAuth: true });
-  const { isOpen, toggleCart, getItemCount } = useCartStore();
   const { setNavigating, setPageLoading } = useLoadingStore();
 
   // Clear loading states when dashboard mounts

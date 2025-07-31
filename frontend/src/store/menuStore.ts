@@ -50,10 +50,11 @@ export const useMenuStore = create<MenuState>((set, get) => ({
         });
         return false;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching menu items:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch menu items';
       set({
-        error: error.message || 'Failed to fetch menu items',
+        error: errorMessage,
         isLoading: false,
       });
       return false;
@@ -72,7 +73,7 @@ export const useMenuStore = create<MenuState>((set, get) => ({
         console.error('Failed to fetch categories:', data.message);
         return false;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching categories:', error);
       return false;
     }
