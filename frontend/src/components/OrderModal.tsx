@@ -24,6 +24,9 @@ export default function OrderModal({
   const [orderSuccess, setOrderSuccess] = useState<{
     orderId: string;
     timestamp: Date;
+    orderItems: CartItem[];
+    orderTotal: number;
+    orderItemCount: number;
   } | null>(null);
 
   const handleConfirmOrder = async () => {
@@ -52,18 +55,26 @@ export default function OrderModal({
       const response = await apiClient.orders.create(orderData);
 
       if (response.success && response.data) {
-        // Set order success state
+        // Store order details before clearing cart
+        // The backend returns order data in response.data.data.order.id
+        const orderId =
+          response.data?.order?.id || response.data?.id || 'unknown';
+
+        // Set order success state with all necessary data for receipt
         setOrderSuccess({
-          orderId: response.data.id || 'unknown',
+          orderId: orderId.toString(),
           timestamp: new Date(),
+          orderItems: [...items], // Copy items before clearing cart
+          orderTotal: getTotal(),
+          orderItemCount: getItemCount(),
         });
 
         // Clear cart on successful order
         clearCart();
 
         // Call success callback with order ID
-        if (onSuccess && response.data.id) {
-          onSuccess(response.data.id);
+        if (onSuccess && orderId !== 'unknown') {
+          onSuccess(orderId.toString());
         }
       } else {
         setError(response.message || 'Failed to create order');
@@ -91,11 +102,12 @@ export default function OrderModal({
     if (orderSuccess) {
       const receiptData: ReceiptData = {
         orderId: orderSuccess.orderId,
-        items: items,
-        totalAmount: getTotal(),
-        itemCount: getItemCount(),
+        items: orderSuccess.orderItems, // Use stored order items
+        totalAmount: orderSuccess.orderTotal, // Use stored order total
+        itemCount: orderSuccess.orderItemCount, // Use stored order item count
         timestamp: orderSuccess.timestamp,
       };
+
       printReceipt(receiptData);
     }
   };
@@ -104,11 +116,12 @@ export default function OrderModal({
     if (orderSuccess) {
       const receiptData: ReceiptData = {
         orderId: orderSuccess.orderId,
-        items: items,
-        totalAmount: getTotal(),
-        itemCount: getItemCount(),
+        items: orderSuccess.orderItems, // Use stored order items
+        totalAmount: orderSuccess.orderTotal, // Use stored order total
+        itemCount: orderSuccess.orderItemCount, // Use stored order item count
         timestamp: orderSuccess.timestamp,
       };
+
       downloadReceipt(receiptData);
     }
   };

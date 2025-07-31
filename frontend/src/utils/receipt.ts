@@ -247,7 +247,9 @@ export function generateReceiptHTML(data: ReceiptData): string {
         </div>
         
         <div class="items">
-            ${data.items.map(item => `
+            ${data.items
+              .map(
+                item => `
                 <div class="item">
                     <div class="item-details">
                         <div class="item-name">${item.name}</div>
@@ -259,7 +261,9 @@ export function generateReceiptHTML(data: ReceiptData): string {
                         $${(item.price * item.quantity).toFixed(2)}
                     </div>
                 </div>
-            `).join('')}
+            `
+              )
+              .join('')}
         </div>
         
         <div class="total-section">
@@ -291,14 +295,14 @@ export function generateReceiptHTML(data: ReceiptData): string {
 
 export function printReceipt(data: ReceiptData): void {
   const html = generateReceiptHTML(data);
-  
+
   // Create a new window for printing
   const printWindow = window.open('', '_blank', 'width=400,height=600');
-  
+
   if (printWindow) {
     printWindow.document.write(html);
     printWindow.document.close();
-    
+
     // Wait for content to load, then print
     printWindow.onload = () => {
       printWindow.print();
@@ -310,14 +314,14 @@ export function printReceipt(data: ReceiptData): void {
     const iframe = document.createElement('iframe');
     iframe.style.display = 'none';
     document.body.appendChild(iframe);
-    
+
     const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
     if (iframeDoc) {
       iframeDoc.write(html);
       iframeDoc.close();
-      
+
       iframe.contentWindow?.print();
-      
+
       // Remove iframe after printing
       setTimeout(() => {
         document.body.removeChild(iframe);
@@ -330,14 +334,14 @@ export function downloadReceipt(data: ReceiptData, filename?: string): void {
   const html = generateReceiptHTML(data);
   const blob = new Blob([html], { type: 'text/html' });
   const url = URL.createObjectURL(blob);
-  
+
   const link = document.createElement('a');
   link.href = url;
   link.download = filename || `receipt-${data.orderId}.html`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  
+
   // Clean up
   URL.revokeObjectURL(url);
 }
@@ -365,13 +369,13 @@ export function generateReceiptText(data: ReceiptData): string {
   text += '\n';
   text += 'ITEMS:\n';
   text += '-'.repeat(40) + '\n';
-  
+
   data.items.forEach(item => {
     text += `${item.name}\n`;
     text += `  ${item.category} • Qty: ${item.quantity} × $${item.price.toFixed(2)}\n`;
     text += `  Subtotal: $${(item.price * item.quantity).toFixed(2)}\n\n`;
   });
-  
+
   text += '='.repeat(40) + '\n';
   text += `Items: ${data.itemCount}\n`;
   text += `TOTAL: $${data.totalAmount.toFixed(2)}\n`;
@@ -379,6 +383,6 @@ export function generateReceiptText(data: ReceiptData): string {
   text += 'Thank you for your order!\n';
   text += 'Please keep this receipt for your records.\n';
   text += 'Visit us again soon!\n';
-  
+
   return text;
-} 
+}
