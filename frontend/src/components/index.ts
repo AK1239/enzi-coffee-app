@@ -19,3 +19,6 @@ export { default as ProtectedRoute } from './auth/ProtectedRoute';
 // Utility components
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as AuthProvider } from './AuthProvider';
+
+// Dashboard components
+export * from './dashboard';

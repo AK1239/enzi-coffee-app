@@ -57,7 +57,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     };
 
     checkAuth();
-  }, [token, isAuthenticated, setLoading, clearAuth]); // Removed isLoading from dependencies
+  }, [token, isAuthenticated, setLoading, clearAuth]);
 
   // Show loading spinner while checking authentication
   if (isLoading) {
