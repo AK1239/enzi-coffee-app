@@ -7,6 +7,7 @@ interface OrdersTableProps {
   formatDate: (date: string | Date) => string;
   emptyMessage: string;
   emptyDescription: string;
+  onOrderClick?: (order: Order) => void;
 }
 
 export default function OrdersTable({
@@ -16,6 +17,7 @@ export default function OrdersTable({
   formatDate,
   emptyMessage,
   emptyDescription,
+  onOrderClick,
 }: OrdersTableProps) {
   if (orders.length === 0) {
     return (
@@ -70,7 +72,10 @@ export default function OrdersTable({
             {orders.map(order => (
               <tr
                 key={order.id}
-                className="hover:bg-slate-700/20 transition-colors"
+                className={`hover:bg-slate-700/20 transition-colors ${
+                  onOrderClick ? 'cursor-pointer' : ''
+                }`}
+                onClick={() => onOrderClick?.(order)}
               >
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
                   {order.id.slice(0, 8)}...
