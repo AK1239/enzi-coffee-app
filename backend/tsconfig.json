@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["ES2020"],
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "./dist",
@@ -34,13 +34,27 @@
       "@/middleware/*": ["./src/middleware/*"],
       "@/routes/*": ["./src/routes/*"],
       "@/lib/*": ["./src/lib/*"]
-    }
+    },
+    // Build optimizations
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src/**/*", "prisma/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.d.ts"
+  ],
   "ts-node": {
     "require": ["ts-node/register"],
     "transpileOnly": true,
-    "files": true
+    "files": true,
+    "compilerOptions": {
+      "module": "commonjs"
+    }
   }
 }
