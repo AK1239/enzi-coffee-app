@@ -2,6 +2,7 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { logger } from './utils/logger';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 // Import routes
 import authRoutes from './routes/auth';
@@ -66,20 +67,11 @@ export function createServer(): Express {
     });
   });
 
+  // 404 handler - must be before error handler
+  app.use(notFoundHandler);
+
   // Global error handling middleware
-  app.use((error: Error, req: Request, res: Response, _next: NextFunction) => {
-    logger.error('Unhandled error:', error);
-
-    // Don't leak error details in production
-    const isDevelopment = process.env['NODE_ENV'] === 'development';
-
-    res.status(500).json({
-      success: false,
-      error: 'Internal server error',
-      message: isDevelopment ? error.message : 'Something went wrong',
-      ...(isDevelopment && { stack: error.stack }),
-    });
-  });
+  app.use(errorHandler);
 
   return app;
 }

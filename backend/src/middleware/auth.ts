@@ -4,6 +4,7 @@ import {
   extractTokenFromHeader,
   getUserById,
 } from '../utils/auth';
+import { AuthenticationError } from './errorHandler';
 
 // Extend the Express Request interface to include user data
 declare global {
@@ -33,34 +34,19 @@ export async function authenticateToken(
     const token = extractTokenFromHeader(authHeader);
 
     if (!token) {
-      res.status(401).json({
-        success: false,
-        message: 'Access token required',
-        error: 'MISSING_TOKEN',
-      });
-      return;
+      throw new AuthenticationError('Access token required');
     }
 
     // Verify the token
     const payload = verifyToken(token);
     if (!payload) {
-      res.status(401).json({
-        success: false,
-        message: 'Invalid or expired token',
-        error: 'INVALID_TOKEN',
-      });
-      return;
+      throw new AuthenticationError('Invalid or expired token');
     }
 
     // Get user data from database to ensure user still exists
     const user = await getUserById(payload.userId);
     if (!user) {
-      res.status(401).json({
-        success: false,
-        message: 'User not found',
-        error: 'USER_NOT_FOUND',
-      });
-      return;
+      throw new AuthenticationError('User not found');
     }
 
     // Add user data to request object
@@ -72,12 +58,7 @@ export async function authenticateToken(
 
     next();
   } catch (error) {
-    console.error('Authentication middleware error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Authentication error',
-      error: 'AUTH_ERROR',
-    });
+    next(error);
   }
 }
 
