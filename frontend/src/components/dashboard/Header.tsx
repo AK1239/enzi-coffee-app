@@ -12,7 +12,10 @@ const navigationItems = [
 
 interface HeaderProps {
   setSidebarOpen: (open: boolean) => void;
-  user: any;
+  user: {
+    name?: string;
+    email?: string;
+  } | null;
 }
 
 export default function Header({ setSidebarOpen, user }: HeaderProps) {

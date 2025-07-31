@@ -30,7 +30,7 @@ export default function DashboardLayout({
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-amber-900">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-amber-900 flex">
         <Sidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -38,7 +38,7 @@ export default function DashboardLayout({
         />
 
         {/* Main Content */}
-        <div className="lg:pl-64">
+        <div className="flex-1 lg:ml-0">
           <Header setSidebarOpen={setSidebarOpen} user={user} />
 
           {/* Page Content */}
