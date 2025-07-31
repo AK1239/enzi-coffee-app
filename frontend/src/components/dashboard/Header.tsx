@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { useCartStore } from '../../store';
+import { useCartStore, useLoadingStore } from '../../store';
 
 // Navigation items for header title mapping
 const navigationItems = [
@@ -25,6 +25,7 @@ export default function Header({ setSidebarOpen, user }: HeaderProps) {
   const currentPage =
     navigationItems.find(item => item.href === pathname)?.name || 'Dashboard';
   const { toggleCart, getItemCount } = useCartStore();
+  const { isNavigating } = useLoadingStore();
 
   return (
     <header className="bg-slate-900/95 backdrop-blur-xl border-b border-slate-700/50 shadow-lg">
@@ -51,7 +52,12 @@ export default function Header({ setSidebarOpen, user }: HeaderProps) {
 
         {/* Page Title */}
         <div className="flex items-center space-x-4">
-          <h1 className="text-2xl font-bold text-white">{currentPage}</h1>
+          <div className="flex items-center space-x-2">
+            <h1 className="text-2xl font-bold text-white">{currentPage}</h1>
+            {isNavigating && (
+              <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+            )}
+          </div>
           <div className="hidden sm:block w-px h-6 bg-slate-600" />
           <p className="hidden sm:block text-sm text-slate-400">
             Welcome back, {user?.name}

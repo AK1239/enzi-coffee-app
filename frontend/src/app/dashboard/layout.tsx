@@ -1,15 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '../../hooks';
+import { useAuth, useRouteLoading } from '../../hooks';
 import {
   ProtectedRoute,
   LoadingSpinner,
+  LoadingOverlay,
   Sidebar,
   Header,
   Cart,
 } from '../../components';
-import { useCartStore } from '../../store';
+import { useCartStore, useLoadingStore } from '../../store';
 
 export default function DashboardLayout({
   children,
@@ -19,6 +20,10 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, isLoading } = useAuth({ requireAuth: true });
   const { isOpen, toggleCart, getItemCount } = useCartStore();
+
+  // Initialize route loading hook
+  useRouteLoading();
+  const { isNavigating } = useLoadingStore();
 
   if (isLoading) {
     return (
@@ -53,6 +58,9 @@ export default function DashboardLayout({
         {/* Cart Component */}
         <Cart />
       </div>
+
+      {/* Loading Overlay for Navigation */}
+      <LoadingOverlay isVisible={isNavigating} message="Loading..." />
     </ProtectedRoute>
   );
 }

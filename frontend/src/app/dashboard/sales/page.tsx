@@ -1,8 +1,13 @@
 'use client';
 
+import React from 'react';
 import { useAuth } from '../../../hooks';
 import { useSalesDashboard } from '../../../hooks';
-import { LoadingSpinner } from '../../../components';
+import {
+  LoadingSpinner,
+  SkeletonStats,
+  SkeletonTable,
+} from '../../../components';
 import {
   SalesHeader,
   SalesSummaryCards,
@@ -10,6 +15,7 @@ import {
   OrdersTable,
 } from '../../../components/dashboard';
 import { formatCurrency, formatDate } from '../../../utils/formatters';
+import { useLoadingStore } from '../../../store';
 
 export default function SalesDashboardPage() {
   const { user } = useAuth({ requireAuth: true });
@@ -25,11 +31,42 @@ export default function SalesDashboardPage() {
     handleTabChange,
     handleRetry,
   } = useSalesDashboard();
+  const { salesLoading, setSalesLoading } = useLoadingStore();
 
-  if (isLoading) {
+  // Clear loading state when data is loaded
+  React.useEffect(() => {
+    if (!isLoading && !error) {
+      setSalesLoading(false);
+    }
+  }, [isLoading, error, setSalesLoading]);
+
+  // Show skeleton loading for sales page
+  if (salesLoading || isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
+      <div className="space-y-6">
+        {/* Page Header Skeleton */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="h-8 bg-slate-700/50 rounded-lg w-56 mb-2 animate-pulse"></div>
+            <div className="h-4 bg-slate-700/50 rounded w-72 animate-pulse"></div>
+          </div>
+          <div className="flex gap-4 mt-4 sm:mt-0">
+            <div className="h-10 bg-slate-700/50 rounded-lg w-32 animate-pulse"></div>
+            <div className="h-10 bg-slate-700/50 rounded-lg w-40 animate-pulse"></div>
+          </div>
+        </div>
+
+        {/* Stats Skeleton */}
+        <SkeletonStats />
+
+        {/* Tabs Skeleton */}
+        <div className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700/50">
+          <div className="flex space-x-4 mb-6">
+            <div className="h-10 bg-slate-700/50 rounded-lg w-24 animate-pulse"></div>
+            <div className="h-10 bg-slate-700/50 rounded-lg w-24 animate-pulse"></div>
+          </div>
+          <SkeletonTable rows={6} />
+        </div>
       </div>
     );
   }

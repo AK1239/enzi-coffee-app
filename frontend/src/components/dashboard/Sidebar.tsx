@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '../../store/authStore';
+import { useLoadingStore } from '../../store';
 
 // Navigation items configuration
 const navigationItems = [
@@ -106,9 +107,15 @@ export default function Sidebar({
 }: SidebarProps) {
   const pathname = usePathname();
   const logout = useAuthStore(state => state.logout);
+  const { setNavigating } = useLoadingStore();
 
   const handleLogout = () => {
     logout();
+  };
+
+  const handleNavigation = () => {
+    setNavigating(true);
+    setSidebarOpen(false);
   };
 
   return (
@@ -178,6 +185,7 @@ export default function Sidebar({
                 <Link
                   key={item.name}
                   href={item.href}
+                  onClick={handleNavigation}
                   className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
                     isActive
                       ? 'bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-400/30 text-amber-300 shadow-lg'

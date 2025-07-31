@@ -18,7 +18,11 @@ export { default as ProtectedRoute } from './auth/ProtectedRoute';
 
 // Utility components
 export { default as LoadingSpinner } from './LoadingSpinner';
+export { default as LoadingOverlay } from './LoadingOverlay';
 export { default as AuthProvider } from './AuthProvider';
+
+// Skeleton components
+export { default as Skeleton, SkeletonText, SkeletonCard, SkeletonTable, SkeletonStats } from './Skeleton';
 
 // Menu components
 export { default as MenuGrid } from './MenuGrid';
@@ -30,7 +34,13 @@ export { default as Cart } from './Cart';
 export { default as OrderModal } from './OrderModal';
 
 // Error components
-export { default as ErrorDisplay, NetworkError, ValidationError, ServerError, AuthError } from './ErrorDisplay';
+export {
+  default as ErrorDisplay,
+  NetworkError,
+  ValidationError,
+  ServerError,
+  AuthError,
+} from './ErrorDisplay';
 export { ErrorBoundary, withErrorBoundary } from './ErrorBoundary';
 
 // Toast components

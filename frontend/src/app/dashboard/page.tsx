@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../hooks';
-import { useMenuStore, useCartStore } from '../../store';
-import { MenuGrid, OrderModal, LoadingSpinner } from '../../components';
+import { useMenuStore, useCartStore, useLoadingStore } from '../../store';
+import { MenuGrid, OrderModal, LoadingSpinner, SkeletonCard, SkeletonStats } from '../../components';
 import { MenuItem } from '../../types';
 
 export default function DashboardPage() {
@@ -17,9 +17,17 @@ export default function DashboardPage() {
     removeItem,
     updateQuantity,
   } = useCartStore();
+  const { dashboardLoading, setDashboardLoading } = useLoadingStore();
 
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
+
+  // Clear loading state when data is loaded
+  React.useEffect(() => {
+    if (!isLoading && !error) {
+      setDashboardLoading(false);
+    }
+  }, [isLoading, error, setDashboardLoading]);
 
   // Handle add to cart
   const handleAddToCart = (item: MenuItem) => {
@@ -49,10 +57,69 @@ export default function DashboardPage() {
     }
   };
 
-  if (isLoading) {
+  // Show skeleton loading for dashboard
+  if (dashboardLoading || isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
+      <div className="space-y-6">
+        {/* Header Skeleton */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="h-8 bg-slate-700/50 rounded-lg w-64 mb-2 animate-pulse"></div>
+            <div className="h-4 bg-slate-700/50 rounded w-80 animate-pulse"></div>
+          </div>
+          <div className="flex gap-4 mt-4 sm:mt-0">
+            <div className="bg-slate-700/50 backdrop-blur-xl rounded-lg p-4 border border-slate-600/50 w-24">
+              <div className="h-6 bg-slate-600/50 rounded w-12 mb-1 animate-pulse"></div>
+              <div className="h-3 bg-slate-600/50 rounded w-16 animate-pulse"></div>
+            </div>
+            <div className="bg-slate-700/50 backdrop-blur-xl rounded-lg p-4 border border-slate-600/50 w-24">
+              <div className="h-6 bg-slate-600/50 rounded w-12 mb-1 animate-pulse"></div>
+              <div className="h-3 bg-slate-600/50 rounded w-16 animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content Skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Menu Grid Skeleton */}
+          <div className="lg:col-span-2">
+            <div className="bg-slate-700/50 backdrop-blur-xl rounded-xl p-6 border border-slate-600/50">
+              <div className="flex items-center justify-between mb-6">
+                <div className="h-6 bg-slate-600/50 rounded w-16 animate-pulse"></div>
+                <div className="h-4 bg-slate-600/50 rounded w-24 animate-pulse"></div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <SkeletonCard key={i} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Cart Sidebar Skeleton */}
+          <div className="lg:col-span-1">
+            <div className="bg-slate-700/50 backdrop-blur-xl rounded-xl p-6 border border-slate-600/50">
+              <div className="flex items-center justify-between mb-6">
+                <div className="h-6 bg-slate-600/50 rounded w-32 animate-pulse"></div>
+              </div>
+              <div className="space-y-4">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="flex items-center justify-between p-3 bg-slate-600/30 rounded-lg">
+                    <div className="flex-1">
+                      <div className="h-4 bg-slate-600/50 rounded w-24 mb-1 animate-pulse"></div>
+                      <div className="h-3 bg-slate-600/50 rounded w-16 animate-pulse"></div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-slate-600/50 rounded-full animate-pulse"></div>
+                      <div className="w-8 h-8 bg-slate-600/50 rounded animate-pulse"></div>
+                      <div className="w-8 h-8 bg-slate-600/50 rounded-full animate-pulse"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

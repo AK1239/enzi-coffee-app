@@ -1,8 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useOrdersStore } from '../../../store';
-import { LoadingSpinner, OrdersTable, ErrorDisplay } from '../../../components';
+import React, { useState, useEffect } from 'react';
+import { useOrdersStore, useLoadingStore } from '../../../store';
+import {
+  LoadingSpinner,
+  OrdersTable,
+  ErrorDisplay,
+  SkeletonTable,
+  SkeletonStats,
+} from '../../../components';
 import { formatCurrency, formatDate } from '../../../utils/formatters';
 import { Order } from '../../../types';
 
@@ -17,6 +23,7 @@ export default function OrdersPage() {
     fetchDailyOrders,
     clearError,
   } = useOrdersStore();
+  const { ordersLoading, setOrdersLoading } = useLoadingStore();
 
   const [activeTab, setActiveTab] = useState<'all' | 'today'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -28,6 +35,13 @@ export default function OrdersPage() {
     fetchAllOrders();
     fetchDailyOrders();
   }, [fetchAllOrders, fetchDailyOrders]);
+
+  // Clear loading state when data is loaded
+  useEffect(() => {
+    if (!isLoading && !error) {
+      setOrdersLoading(false);
+    }
+  }, [isLoading, error, setOrdersLoading]);
 
   // Filter orders based on search query
   const filteredOrders = (activeTab === 'all' ? orders : dailyOrders).filter(
@@ -51,10 +65,41 @@ export default function OrdersPage() {
     setShowOrderDetails(true);
   };
 
-  if (isLoading) {
+  // Show skeleton loading for orders page
+  if (ordersLoading || isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
+      <div className="space-y-6">
+        {/* Page Header Skeleton */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="h-8 bg-slate-700/50 rounded-lg w-48 mb-2 animate-pulse"></div>
+            <div className="h-4 bg-slate-700/50 rounded w-64 animate-pulse"></div>
+          </div>
+          <div className="flex gap-4 mt-4 sm:mt-0">
+            <div className="h-10 bg-slate-700/50 rounded-lg w-32 animate-pulse"></div>
+            <div className="h-10 bg-slate-700/50 rounded-lg w-40 animate-pulse"></div>
+          </div>
+        </div>
+
+        {/* Stats Skeleton */}
+        <SkeletonStats />
+
+        {/* Filters Skeleton */}
+        <div className="bg-slate-800/50 backdrop-blur-xl rounded-xl p-6 border border-slate-700/50">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <div className="h-4 bg-slate-700/50 rounded w-24 mb-2 animate-pulse"></div>
+              <div className="h-10 bg-slate-700/50 rounded-lg animate-pulse"></div>
+            </div>
+            <div>
+              <div className="h-4 bg-slate-700/50 rounded w-20 mb-2 animate-pulse"></div>
+              <div className="h-10 bg-slate-700/50 rounded-lg animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Table Skeleton */}
+        <SkeletonTable rows={8} />
       </div>
     );
   }

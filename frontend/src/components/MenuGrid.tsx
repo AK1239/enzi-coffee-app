@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useMenuStore, useCartStore } from '../store';
+import { useMenuStore, useCartStore, useLoadingStore } from '../store';
 import { MenuItem } from '../types';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -27,11 +27,15 @@ export default function MenuGrid({
   } = useMenuStore();
 
   const [filteredItems, setFilteredItems] = useState<MenuItem[]>([]);
+  const { setMenuLoading } = useLoadingStore();
 
   // Fetch menu items on component mount
   useEffect(() => {
     if (items.length === 0) {
-      fetchMenuItems();
+      setMenuLoading(true);
+      fetchMenuItems().finally(() => {
+        setMenuLoading(false);
+      });
     }
   }, []); // Empty dependency array to run only once
 
