@@ -1,15 +1,21 @@
 'use client';
 
 import { useAuthStore } from '../store/authStore';
+import { useNavigationWithLoading } from '../hooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function Navigation() {
   const { user, isAuthenticated, logout } = useAuthStore();
+  const { navigateWithLoading } = useNavigationWithLoading();
   const pathname = usePathname();
 
   const handleLogout = () => {
     logout();
+  };
+
+  const handleNavigation = (href: string, message?: string) => {
+    navigateWithLoading(href, message);
   };
 
   // Don't show navigation on auth pages
@@ -45,8 +51,10 @@ export default function Navigation() {
           <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
             {isAuthenticated ? (
               <>
-                <Link
-                  href="/dashboard"
+                <button
+                  onClick={() =>
+                    handleNavigation('/dashboard', 'Loading Dashboard...')
+                  }
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     pathname === '/dashboard'
                       ? 'bg-amber-800/50 text-white backdrop-blur-xl'
@@ -54,9 +62,11 @@ export default function Navigation() {
                   }`}
                 >
                   Dashboard
-                </Link>
-                <Link
-                  href="/dashboard/sales"
+                </button>
+                <button
+                  onClick={() =>
+                    handleNavigation('/dashboard/sales', 'Loading Sales...')
+                  }
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors mr-8 ${
                     pathname === '/dashboard/sales'
                       ? 'bg-amber-800/50 text-white backdrop-blur-xl'
@@ -64,24 +74,28 @@ export default function Navigation() {
                   }`}
                 >
                   Sales
-                </Link>
+                </button>
               </>
             ) : (
               <>
-                <Link
-                  href="/login"
+                <button
+                  onClick={() =>
+                    handleNavigation('/login', 'Loading Sign In...')
+                  }
                   className="text-amber-300 hover:text-amber-100 font-medium transition-all duration-300 px-4 py-2 rounded-xl hover:bg-white/5"
                 >
                   Sign In
-                </Link>
-                <Link
-                  href="/register"
+                </button>
+                <button
+                  onClick={() =>
+                    handleNavigation('/register', 'Loading Registration...')
+                  }
                   className="relative group bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white px-6 py-3 rounded-2xl font-semibold shadow-2xl hover:shadow-amber-500/25 transition-all duration-300 hover:scale-105 overflow-hidden"
                 >
                   <span className="relative z-10">Get Started</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="absolute inset-0 bg-white/20 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </Link>
+                </button>
               </>
             )}
           </div>

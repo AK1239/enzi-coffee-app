@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useNavigationWithLoading } from '../hooks';
 
 interface HeroSectionProps {
   isAuthenticated: boolean;
@@ -11,6 +12,12 @@ export default function HeroSection({
   isAuthenticated,
   visibleSections,
 }: HeroSectionProps) {
+  const { navigateWithLoading } = useNavigationWithLoading();
+
+  const handleNavigation = (href: string, message?: string) => {
+    navigateWithLoading(href, message);
+  };
+
   return (
     <div
       id="hero"
@@ -49,8 +56,10 @@ export default function HeroSection({
           {/* Enhanced CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             {isAuthenticated ? (
-              <Link
-                href="/dashboard"
+              <button
+                onClick={() =>
+                  handleNavigation('/dashboard', 'Loading Dashboard...')
+                }
                 className="group relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-amber-500/30 transition-all duration-500 hover:scale-105 overflow-hidden text-base"
               >
                 <span className="relative z-10 flex items-center space-x-2">
@@ -59,11 +68,13 @@ export default function HeroSection({
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="absolute inset-0 bg-white/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              </Link>
+              </button>
             ) : (
               <>
-                <Link
-                  href="/register"
+                <button
+                  onClick={() =>
+                    handleNavigation('/register', 'Loading Registration...')
+                  }
                   className="group relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-amber-500/30 transition-all duration-500 hover:scale-105 overflow-hidden text-base"
                 >
                   <span className="relative z-10 flex items-center space-x-2">
@@ -74,9 +85,11 @@ export default function HeroSection({
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="absolute inset-0 bg-white/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                </Link>
-                <Link
-                  href="/login"
+                </button>
+                <button
+                  onClick={() =>
+                    handleNavigation('/login', 'Loading Sign In...')
+                  }
                   className="group inline-flex items-center justify-center px-8 py-3 bg-white/5 backdrop-blur-xl text-white font-bold rounded-2xl border-2 border-white/20 hover:border-amber-400/50 hover:bg-white/10 transition-all duration-500 shadow-2xl hover:shadow-white/10 text-base"
                 >
                   <span className="flex items-center space-x-2">
@@ -85,7 +98,7 @@ export default function HeroSection({
                       →
                     </span>
                   </span>
-                </Link>
+                </button>
               </>
             )}
           </div>

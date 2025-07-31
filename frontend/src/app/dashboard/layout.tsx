@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useAuth, useRouteLoading } from '../../hooks';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../hooks';
 import {
   LoadingSpinner,
   LoadingOverlay,
@@ -19,9 +19,14 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, isLoading } = useAuth({ requireAuth: true });
   const { isOpen, toggleCart, getItemCount } = useCartStore();
+  const { setNavigating, setPageLoading } = useLoadingStore();
 
-  // Initialize route loading hook
-  useRouteLoading();
+  // Clear loading states when dashboard mounts
+  useEffect(() => {
+    setNavigating(false);
+    setPageLoading(false);
+  }, [setNavigating, setPageLoading]);
+
   const { isNavigating } = useLoadingStore();
 
   if (isLoading) {

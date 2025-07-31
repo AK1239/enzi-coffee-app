@@ -1,12 +1,21 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useAuth } from '../../hooks';
+import { useLoadingStore } from '../../store/loadingStore';
 import { RegisterForm, Navigation } from '../../components';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import BackgroundEffects from '../../components/BackgroundEffects';
 
 export default function RegisterPage() {
   const { isLoading } = useAuth({ redirectIfAuthenticated: true });
+  const { setNavigating, setPageLoading } = useLoadingStore();
+
+  // Clear loading states when page mounts
+  useEffect(() => {
+    setNavigating(false);
+    setPageLoading(false);
+  }, [setNavigating, setPageLoading]);
 
   // Show loading spinner if authentication is being checked
   if (isLoading) {

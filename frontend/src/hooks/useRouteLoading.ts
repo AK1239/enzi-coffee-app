@@ -4,7 +4,14 @@ import { useLoadingStore } from '../store';
 
 export const useRouteLoading = () => {
   const pathname = usePathname();
-  const { setNavigating, setDashboardLoading, setMenuLoading, setOrdersLoading, setSalesLoading } = useLoadingStore();
+  const {
+    setNavigating,
+    setDashboardLoading,
+    setMenuLoading,
+    setOrdersLoading,
+    setSalesLoading,
+    setPageLoading,
+  } = useLoadingStore();
 
   useEffect(() => {
     // Set navigating state when route changes
@@ -12,27 +19,47 @@ export const useRouteLoading = () => {
 
     // Set specific page loading based on current route
     const currentPath = pathname;
-    
-    if (currentPath === '/dashboard') {
+
+    if (currentPath === '/') {
+      setPageLoading(true, 'Loading Home...');
+    } else if (currentPath === '/login') {
+      setPageLoading(true, 'Loading Sign In...');
+    } else if (currentPath === '/register') {
+      setPageLoading(true, 'Loading Registration...');
+    } else if (currentPath === '/dashboard') {
       setDashboardLoading(true);
+      setPageLoading(true, 'Loading Dashboard...');
     } else if (currentPath === '/dashboard/menu') {
       setMenuLoading(true);
+      setPageLoading(true, 'Loading Menu...');
     } else if (currentPath === '/dashboard/orders') {
       setOrdersLoading(true);
+      setPageLoading(true, 'Loading Orders...');
     } else if (currentPath === '/dashboard/sales') {
       setSalesLoading(true);
+      setPageLoading(true, 'Loading Sales...');
     }
 
     // Clear navigating state after a short delay to allow for smooth transitions
     const timer = setTimeout(() => {
       setNavigating(false);
-    }, 100);
+      setPageLoading(false);
+    }, 200);
 
     return () => {
       clearTimeout(timer);
       setNavigating(false);
+      setPageLoading(false);
     };
-  }, [pathname, setNavigating, setDashboardLoading, setMenuLoading, setOrdersLoading, setSalesLoading]);
+  }, [
+    pathname,
+    setNavigating,
+    setDashboardLoading,
+    setMenuLoading,
+    setOrdersLoading,
+    setSalesLoading,
+    setPageLoading,
+  ]);
 
   return {
     isNavigating: useLoadingStore(state => state.isNavigating),
@@ -41,4 +68,4 @@ export const useRouteLoading = () => {
     ordersLoading: useLoadingStore(state => state.ordersLoading),
     salesLoading: useLoadingStore(state => state.salesLoading),
   };
-}; 
+};

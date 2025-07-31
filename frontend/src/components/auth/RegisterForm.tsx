@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { RegisterCredentials } from '../../types';
 import { useAuthForm } from '../../hooks/useAuthForm';
+import { useNavigationWithLoading } from '../../hooks';
 import LoadingSpinner from '../LoadingSpinner';
 
 interface RegisterFormProps {
@@ -18,12 +19,18 @@ export default function RegisterForm({
     email: '',
     password: '',
   });
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const { errors, submitError, isLoading, handleRegister, clearFieldError } =
     useAuthForm({
-      onSuccess,
+      onSuccess: () => {
+        setIsRedirecting(true);
+        onSuccess?.();
+      },
       redirectTo,
     });
+
+  const { navigateWithLoading } = useNavigationWithLoading();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,6 +49,23 @@ export default function RegisterForm({
     e.preventDefault();
     await handleRegister(formData);
   };
+
+  // Show loading screen when redirecting after successful registration
+  if (isRedirecting) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-100 to-amber-200">
+        <div className="text-center">
+          <LoadingSpinner size="lg" className="mb-6" />
+          <h2 className="text-2xl font-bold text-amber-800 mb-2">
+            Welcome aboard!
+          </h2>
+          <p className="text-amber-700 font-medium">
+            Redirecting to dashboard...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -107,7 +131,7 @@ export default function RegisterForm({
                     ? 'border-red-400/50 focus:border-red-400'
                     : 'border-white/20 focus:border-amber-400/50'
                 } rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20 transition-all duration-300`}
-                placeholder="Enter your email address"
+                placeholder="Enter your email"
               />
               {errors.email && (
                 <p className="mt-2 text-sm text-red-400 flex items-center">
@@ -155,7 +179,7 @@ export default function RegisterForm({
           {submitError && (
             <div className="mb-6 p-4 bg-red-500/10 backdrop-blur-xl border border-red-400/30 rounded-2xl">
               <p className="text-sm text-red-300 flex items-center">
-                <span className="w-2 h-2 bg-red-400 rounded-full mr-2 animate-pulse"></span>
+                <span className="w-2 h-2 bg-red-400 rounded-full mr-2"></span>
                 {submitError}
               </p>
             </div>
@@ -194,24 +218,27 @@ export default function RegisterForm({
         <div className="text-center">
           <p className="text-gray-300 text-sm">
             Already have an account?{' '}
-            <Link
-              href="/login"
+            <button
+              type="button"
+              onClick={() =>
+                navigateWithLoading('/login', 'Loading Sign In...')
+              }
               className="font-semibold text-transparent bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text hover:from-amber-200 hover:to-orange-300 transition-all duration-300"
             >
               Sign in here
-            </Link>
+            </button>
           </p>
         </div>
 
         {/* Back to Home */}
         <div className="text-center">
-          <Link
-            href="/"
+          <button
+            onClick={() => navigateWithLoading('/', 'Loading Home...')}
             className="inline-flex items-center space-x-2 text-gray-400 hover:text-amber-300 transition-colors duration-300 text-sm"
           >
             <span>←</span>
             <span>Back to home</span>
-          </Link>
+          </button>
         </div>
       </div>
     </form>

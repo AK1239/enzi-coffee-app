@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { LoginCredentials } from '../../types';
 import { useAuthForm } from '../../hooks/useAuthForm';
+import { useNavigationWithLoading } from '../../hooks';
 import LoadingSpinner from '../LoadingSpinner';
 
 interface LoginFormProps {
@@ -24,6 +25,8 @@ export default function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
       },
       redirectTo,
     });
+
+  const { navigateWithLoading } = useNavigationWithLoading();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -139,7 +142,7 @@ export default function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
           {submitError && (
             <div className="mb-6 p-4 bg-red-500/10 backdrop-blur-xl border border-red-400/30 rounded-2xl">
               <p className="text-sm text-red-300 flex items-center">
-                <span className="w-2 h-2 bg-red-400 rounded-full mr-2 animate-pulse"></span>
+                <span className="w-2 h-2 bg-red-400 rounded-full mr-2"></span>
                 {submitError}
               </p>
             </div>
@@ -178,24 +181,28 @@ export default function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
         <div className="text-center">
           <p className="text-gray-300 text-sm">
             Don&apos;t have an account?{' '}
-            <Link
-              href="/register"
+            <button
+              type="button"
+              onClick={() =>
+                navigateWithLoading('/register', 'Loading Registration...')
+              }
               className="font-semibold text-transparent bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text hover:from-amber-200 hover:to-orange-300 transition-all duration-300"
             >
               Sign up here
-            </Link>
+            </button>
           </p>
         </div>
 
         {/* Back to Home */}
         <div className="text-center">
-          <Link
-            href="/"
+          <button
+            type="button"
+            onClick={() => navigateWithLoading('/', 'Loading Home...')}
             className="inline-flex items-center space-x-2 text-gray-400 hover:text-amber-300 transition-colors duration-300 text-sm"
           >
             <span>←</span>
             <span>Back to home</span>
-          </Link>
+          </button>
         </div>
       </div>
     </form>

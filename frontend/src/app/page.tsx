@@ -1,6 +1,8 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { useLoadingStore } from '../store/loadingStore';
 import {
   Navigation,
   HeroSection,
@@ -15,6 +17,13 @@ import { useScrollEffects } from '../hooks';
 export default function Home() {
   const { isAuthenticated } = useAuthStore();
   const { scrollY, visibleSections } = useScrollEffects();
+  const { setNavigating, setPageLoading } = useLoadingStore();
+
+  // Clear loading states when page mounts
+  useEffect(() => {
+    setNavigating(false);
+    setPageLoading(false);
+  }, [setNavigating, setPageLoading]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-amber-900 relative overflow-hidden">
