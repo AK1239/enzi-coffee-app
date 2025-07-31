@@ -113,6 +113,28 @@ export const apiClient = {
       const response = await api.get('/api/menu');
       return response.data;
     },
+
+    getCategories: async () => {
+      const response = await api.get('/api/menu/categories');
+      return response.data;
+    },
+
+    getByCategory: async (category: string) => {
+      const response = await api.get(`/api/menu/category/${category}`);
+      return response.data;
+    },
+
+    getById: async (id: number) => {
+      const response = await api.get(`/api/menu/item/${id}`);
+      return response.data;
+    },
+
+    search: async (query: string) => {
+      const response = await api.get(
+        `/api/menu/search?q=${encodeURIComponent(query)}`
+      );
+      return response.data;
+    },
   },
 
   // Order endpoints

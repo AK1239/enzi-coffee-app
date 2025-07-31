@@ -26,10 +26,12 @@ export interface OrderItem {
 }
 
 export interface MenuItem {
-  id: string;
+  id: number;
   name: string;
   price: number;
-  description?: string;
+  description: string;
+  category: 'hot' | 'cold' | 'espresso';
+  available: boolean;
 }
 
 // Frontend-specific types
