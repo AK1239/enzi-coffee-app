@@ -26,5 +26,8 @@ export { default as MenuGrid } from './MenuGrid';
 // Cart components
 export { default as Cart } from './Cart';
 
+// Order components
+export { default as OrderModal } from './OrderModal';
+
 // Dashboard components
 export * from './dashboard';

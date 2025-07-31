@@ -4,6 +4,7 @@ import { useCartStore } from '../store';
 import { CartItem } from '../types';
 import LoadingSpinner from './LoadingSpinner';
 import { useState } from 'react';
+import OrderModal from './OrderModal';
 
 interface CartProps {
   className?: string;
@@ -20,6 +21,7 @@ export default function Cart({ className = '' }: CartProps) {
     getTotal,
     getItemCount,
   } = useCartStore();
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
   const handleQuantityChange = (itemId: number, newQuantity: number) => {
     updateQuantity(itemId, newQuantity);
@@ -159,10 +161,7 @@ export default function Cart({ className = '' }: CartProps) {
 
             {/* Checkout Button */}
             <button
-              onClick={() => {
-                // This will be implemented in Task 3.12: Order Confirmation Modal
-                console.log('Proceed to checkout');
-              }}
+              onClick={() => setIsOrderModalOpen(true)}
               className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-orange-700 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-all duration-200 shadow-lg"
             >
               Proceed to Checkout
@@ -170,6 +169,16 @@ export default function Cart({ className = '' }: CartProps) {
           </div>
         )}
       </div>
+
+      {/* Order Modal */}
+      <OrderModal
+        isOpen={isOrderModalOpen}
+        onClose={() => setIsOrderModalOpen(false)}
+        onSuccess={orderId => {
+          console.log('Order created successfully:', orderId);
+          // Could show a success notification here
+        }}
+      />
     </>
   );
 }
