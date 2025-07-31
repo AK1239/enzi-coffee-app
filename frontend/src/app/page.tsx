@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useAuthStore } from '../store/authStore';
 import {
   Navigation,
   HeroSection,
@@ -13,7 +13,7 @@ import {
 import { useScrollEffects } from '../hooks';
 
 export default function Home() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated } = useAuthStore();
   const { scrollY, visibleSections } = useScrollEffects();
 
   return (

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../store/authStore';
 import { isTokenExpired } from '../utils/tokenValidation';
@@ -18,28 +18,41 @@ export const useAuth = (options: UseAuthOptions = {}) => {
     redirectIfAuthenticated = false,
   } = options;
 
+  const redirectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     // Don't do anything while loading
     if (isLoading) return;
 
-    // Check if token is expired
+    // Clear any pending redirect
+    if (redirectTimeoutRef.current) {
+      clearTimeout(redirectTimeoutRef.current);
+    }
+
+    // Check if token is expired (local check only, no API call)
     if (token && isTokenExpired(token)) {
       clearAuth();
       if (requireAuth) {
-        router.push(redirectTo);
+        redirectTimeoutRef.current = setTimeout(() => {
+          router.replace(redirectTo);
+        }, 100);
       }
       return;
     }
 
     // Handle authentication requirements
     if (requireAuth && !isAuthenticated) {
-      router.push(redirectTo);
+      redirectTimeoutRef.current = setTimeout(() => {
+        router.replace(redirectTo);
+      }, 100);
       return;
     }
 
     // Handle redirect if already authenticated (for login/register pages)
     if (redirectIfAuthenticated && isAuthenticated) {
-      router.push('/dashboard');
+      redirectTimeoutRef.current = setTimeout(() => {
+        router.replace('/dashboard');
+      }, 100);
       return;
     }
   }, [
@@ -53,10 +66,19 @@ export const useAuth = (options: UseAuthOptions = {}) => {
     clearAuth,
   ]);
 
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (redirectTimeoutRef.current) {
+        clearTimeout(redirectTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return {
     isAuthenticated,
     isLoading,
     token,
     user: useAuthStore(state => state.user),
   };
-}; 
+};

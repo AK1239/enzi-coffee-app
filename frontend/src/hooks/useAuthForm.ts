@@ -43,7 +43,9 @@ export const useAuthForm = (options: UseAuthFormOptions = {}) => {
 
         if (success) {
           const redirectPath = options.redirectTo || '/dashboard';
-          router.push(redirectPath);
+          // Use replace instead of push to avoid adding to history stack
+          // This can help prevent multiple navigation attempts
+          router.replace(redirectPath);
           options.onSuccess?.();
           return true;
         } else {
@@ -75,7 +77,8 @@ export const useAuthForm = (options: UseAuthFormOptions = {}) => {
 
         if (success) {
           const redirectPath = options.redirectTo || '/dashboard';
-          router.push(redirectPath);
+          // Use replace instead of push to avoid adding to history stack
+          router.replace(redirectPath);
           options.onSuccess?.();
           return true;
         } else {

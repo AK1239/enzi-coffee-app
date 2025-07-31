@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useAuth } from '../../../hooks';
 import { useSalesDashboard } from '../../../hooks';
 import {
   LoadingSpinner,
@@ -18,7 +17,6 @@ import { formatCurrency, formatDate } from '../../../utils/formatters';
 import { useLoadingStore } from '../../../store';
 
 export default function SalesDashboardPage() {
-  const { user } = useAuth({ requireAuth: true });
   const {
     dailyOrders,
     dailySummary,

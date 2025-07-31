@@ -14,10 +14,14 @@ export default function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
     email: '',
     password: '',
   });
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const { errors, submitError, isLoading, handleLogin, clearFieldError } =
     useAuthForm({
-      onSuccess,
+      onSuccess: () => {
+        setIsRedirecting(true);
+        onSuccess?.();
+      },
       redirectTo,
     });
 
@@ -38,6 +42,23 @@ export default function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
     e.preventDefault();
     await handleLogin(formData);
   };
+
+  // Show loading screen when redirecting after successful login
+  if (isRedirecting) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-100 to-amber-200">
+        <div className="text-center">
+          <LoadingSpinner size="lg" className="mb-6" />
+          <h2 className="text-2xl font-bold text-amber-800 mb-2">
+            Welcome back!
+          </h2>
+          <p className="text-amber-700 font-medium">
+            Redirecting to dashboard...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>

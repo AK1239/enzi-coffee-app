@@ -10,18 +10,22 @@ interface AuthProviderProps {
 }
 
 export default function AuthProvider({ children }: AuthProviderProps) {
-  const { token, isAuthenticated, isLoading, setLoading, clearAuth } =
+  const { token, isAuthenticated, isLoading, setLoading, clearAuth, user } =
     useAuthStore();
   const isCheckingAuth = useRef(false);
+  const hasCheckedAuth = useRef(false);
 
   useEffect(() => {
     // Check if user is authenticated on app load
     const checkAuth = async () => {
       // Prevent multiple simultaneous auth checks
       if (isCheckingAuth.current) return;
+      
+      // Only check once per session unless token changes
+      if (hasCheckedAuth.current && isAuthenticated && user) return;
 
-      // Only check if we have a token and are authenticated, but not currently loading
-      if (token && isAuthenticated && !isLoading) {
+      // Only check if we have a token but no user data, or if we're not authenticated
+      if (token && (!user || !isAuthenticated) && !isLoading) {
         isCheckingAuth.current = true;
         setLoading(true);
         try {
@@ -38,6 +42,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
             ) {
               useAuthStore.getState().setUser(data.data.user);
             }
+            hasCheckedAuth.current = true;
           } else {
             throw new Error('Invalid response from server');
           }
@@ -53,11 +58,16 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         // If no token and not authenticated but still loading, stop loading
         setLoading(false);
         isCheckingAuth.current = false;
+        hasCheckedAuth.current = true;
+      } else if (token && isAuthenticated && user) {
+        // Already authenticated with user data, mark as checked
+        hasCheckedAuth.current = true;
+        setLoading(false);
       }
     };
 
     checkAuth();
-  }, [token, isAuthenticated, setLoading, clearAuth]);
+  }, [token, isAuthenticated, user, isLoading, setLoading, clearAuth]);
 
   // Show loading spinner while checking authentication
   if (isLoading) {

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useAuth, useRouteLoading } from '../../hooks';
 import {
-  ProtectedRoute,
   LoadingSpinner,
   LoadingOverlay,
   Sidebar,
@@ -37,7 +36,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <ProtectedRoute>
+    <>
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-amber-900 flex">
         <Sidebar
           sidebarOpen={sidebarOpen}
@@ -58,9 +57,8 @@ export default function DashboardLayout({
         {/* Cart Component */}
         <Cart />
       </div>
-
       {/* Loading Overlay for Navigation */}
       <LoadingOverlay isVisible={isNavigating} message="Loading..." />
-    </ProtectedRoute>
+    </>
   );
 }

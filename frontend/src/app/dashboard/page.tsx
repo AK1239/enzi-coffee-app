@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useAuth } from '../../hooks';
 import { useMenuStore, useCartStore, useLoadingStore } from '../../store';
+import { useAuthStore } from '../../store/authStore';
 import {
   MenuGrid,
   OrderModal,
@@ -13,8 +13,7 @@ import {
 import { MenuItem } from '../../types';
 
 export default function DashboardPage() {
-  const { user } = useAuth({ requireAuth: true });
-  const { items, isLoading, error } = useMenuStore();
+  const { items, isLoading, error, fetchMenuItems } = useMenuStore();
   const {
     items: cartItems,
     getTotal,
@@ -24,14 +23,27 @@ export default function DashboardPage() {
     updateQuantity,
   } = useCartStore();
   const { dashboardLoading, setDashboardLoading } = useLoadingStore();
+  const { isAuthenticated } = useAuthStore();
 
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
+
+  // Fetch menu data when authenticated and items are empty
+  React.useEffect(() => {
+    if (isAuthenticated && items.length === 0 && !isLoading) {
+      fetchMenuItems();
+    }
+  }, [isAuthenticated, items.length, isLoading, fetchMenuItems]);
 
   // Clear loading state when data is loaded
   React.useEffect(() => {
     if (!isLoading && !error) {
       setDashboardLoading(false);
+      // Add a small delay to show the loading state for better UX
+      setTimeout(() => {
+        setIsInitializing(false);
+      }, 500);
     }
   }, [isLoading, error, setDashboardLoading]);
 
@@ -62,6 +74,23 @@ export default function DashboardPage() {
       setIsSubmittingOrder(false);
     }
   };
+
+  // Show initialization loading for dashboard
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-amber-900 flex items-center justify-center">
+        <div className="text-center">
+          <LoadingSpinner size="lg" className="mb-6" />
+          <h2 className="text-2xl font-bold text-white mb-2">
+            Welcome to Dashboard
+          </h2>
+          <p className="text-amber-300 font-medium">
+            Loading your workspace...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Show skeleton loading for dashboard
   if (dashboardLoading || isLoading) {
@@ -156,7 +185,7 @@ export default function DashboardPage() {
             POS Dashboard
           </h1>
           <p className="text-slate-300 mt-2 text-sm sm:text-base">
-            Welcome back, {user?.name || 'User'}. Ready to take orders?
+            Welcome back, User. Ready to take orders?
           </p>
         </div>
 
