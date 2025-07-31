@@ -18,7 +18,7 @@ export function createServer(): Express {
   // CORS configuration
   app.use(
     cors({
-      origin: process.env['FRONTEND_URL'] || 'http://localhost:3000',
+      origin: true, // Allow all origins
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
       allowedHeaders: ['Content-Type', 'Authorization'],
