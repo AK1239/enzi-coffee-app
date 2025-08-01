@@ -94,38 +94,6 @@ export default function Header({ setSidebarOpen, user }: HeaderProps) {
               </span>
             )}
           </button>
-
-          {/* Notifications with improved touch target */}
-          <button 
-            className="p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white transition-colors touch-manipulation"
-            style={{ minWidth: '44px', minHeight: '44px' }}
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 17h5l-5 5v-5z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-              />
-            </svg>
-          </button>
-
-          {/* Quick Actions with improved responsive text */}
-          <button className="px-3 sm:px-4 py-2 sm:py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all duration-300 font-medium shadow-lg touch-manipulation text-sm sm:text-base">
-            <span className="hidden sm:inline">New Order</span>
-            <span className="sm:hidden">+</span>
-          </button>
         </div>
       </div>
     </header>
