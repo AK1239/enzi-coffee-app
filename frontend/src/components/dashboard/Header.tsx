@@ -52,7 +52,7 @@ export default function Header({ setSidebarOpen, user }: HeaderProps) {
         </button>
 
         {/* Page Title with improved responsive layout */}
-        <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-1 lg:flex-none">
+        <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-1 lg:flex-none ml-2 sm:ml-4">
           <div className="flex items-center space-x-2 min-w-0">
             <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">
               {currentPage}
@@ -72,7 +72,7 @@ export default function Header({ setSidebarOpen, user }: HeaderProps) {
           {/* Cart Button with improved touch target */}
           <button
             onClick={toggleCart}
-            className="relative p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white transition-colors touch-manipulation"
+            className="flex items-center justify-center relative p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white transition-colors touch-manipulation"
             style={{ minWidth: '44px', minHeight: '44px' }}
           >
             <svg
