@@ -2,10 +2,7 @@
 
 import React from 'react';
 import { useSalesDashboard } from '../../../hooks';
-import {
-  SkeletonStats,
-  SkeletonTable,
-} from '../../../components';
+import { SkeletonStats, SkeletonTable } from '../../../components';
 import {
   SalesHeader,
   SalesSummaryCards,
@@ -28,14 +25,17 @@ export default function SalesDashboardPage() {
     handleTabChange,
     handleRetry,
   } = useSalesDashboard();
-  const { salesLoading, setSalesLoading } = useLoadingStore();
+  const { salesLoading, setSalesLoading, setPageLoading, setNavigating } =
+    useLoadingStore();
 
   // Clear loading state when data is loaded
   React.useEffect(() => {
     if (!isLoading && !error) {
       setSalesLoading(false);
+      setPageLoading(false); // Clear the global page loading
+      setNavigating(false); // Clear the navigation state
     }
-  }, [isLoading, error, setSalesLoading]);
+  }, [isLoading, error, setSalesLoading, setPageLoading, setNavigating]);
 
   // Show skeleton loading for sales page
   if (salesLoading || isLoading) {

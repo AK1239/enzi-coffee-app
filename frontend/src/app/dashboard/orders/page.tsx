@@ -22,7 +22,8 @@ export default function OrdersPage() {
     fetchDailyOrders,
     clearError,
   } = useOrdersStore();
-  const { ordersLoading, setOrdersLoading } = useLoadingStore();
+  const { ordersLoading, setOrdersLoading, setPageLoading, setNavigating } =
+    useLoadingStore();
 
   const [activeTab, setActiveTab] = useState<'all' | 'today'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,8 +40,10 @@ export default function OrdersPage() {
   useEffect(() => {
     if (!isLoading && !error) {
       setOrdersLoading(false);
+      setPageLoading(false); // Clear the global page loading
+      setNavigating(false); // Clear the navigation state
     }
-  }, [isLoading, error, setOrdersLoading]);
+  }, [isLoading, error, setOrdersLoading, setPageLoading, setNavigating]);
 
   // Filter orders based on search query
   const filteredOrders = (activeTab === 'all' ? orders : dailyOrders).filter(

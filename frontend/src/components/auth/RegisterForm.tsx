@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { RegisterCredentials } from '../../types';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { useNavigationWithLoading } from '../../hooks';
+import { useLoadingStore } from '../../store';
 import LoadingSpinner from '../LoadingSpinner';
 
 interface RegisterFormProps {
@@ -25,10 +26,10 @@ export default function RegisterForm({
       onSuccess: () => {
         onSuccess?.();
       },
-      redirectTo,
     });
 
   const { navigateWithLoading } = useNavigationWithLoading();
+  const { setPageLoading } = useLoadingStore();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,12 +47,18 @@ export default function RegisterForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Set page loading immediately to prevent static screen
+    setPageLoading(true, 'Creating account...');
+
     // Set loading state for registration process
     const success = await handleRegister(formData);
 
     if (success) {
       // Use loading navigation to redirect to dashboard
       navigateWithLoading('/dashboard', 'Welcome aboard! Loading dashboard...');
+    } else {
+      // Clear loading if registration failed
+      setPageLoading(false);
     }
   };
 

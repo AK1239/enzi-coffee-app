@@ -21,7 +21,12 @@ export default function DashboardPage() {
     removeItem,
     updateQuantity,
   } = useCartStore();
-  const { dashboardLoading, setDashboardLoading } = useLoadingStore();
+  const {
+    dashboardLoading,
+    setDashboardLoading,
+    setPageLoading,
+    setNavigating,
+  } = useLoadingStore();
   const { isAuthenticated } = useAuthStore();
 
   const [showOrderModal, setShowOrderModal] = useState(false);
@@ -38,19 +43,19 @@ export default function DashboardPage() {
   React.useEffect(() => {
     if (!isLoading && !error) {
       setDashboardLoading(false);
+      setPageLoading(false); // Clear the global page loading
+      setNavigating(false); // Clear the navigation state
       // Add a small delay to show the loading state for better UX
       setTimeout(() => {
         setIsInitializing(false);
       }, 500);
     }
-  }, [isLoading, error, setDashboardLoading]);
+  }, [isLoading, error, setDashboardLoading, setPageLoading, setNavigating]);
 
   // Handle add to cart
   const handleAddToCart = (item: MenuItem) => {
     addItem(item);
   };
-
-
 
   // Show initialization loading for dashboard
   if (isInitializing) {

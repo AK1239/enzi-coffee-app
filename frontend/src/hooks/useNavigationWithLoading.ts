@@ -14,7 +14,7 @@ export const useNavigationWithLoading = () => {
     router.push(href);
 
     // Don't clear loading states here - let the new page handle it
-    // The loading will be cleared when the new page mounts
+    // The loading will be cleared when the new page mounts and data is loaded
   };
 
   return { navigateWithLoading };

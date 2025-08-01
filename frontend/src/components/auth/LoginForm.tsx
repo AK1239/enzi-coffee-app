@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { LoginCredentials } from '../../types';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { useNavigationWithLoading } from '../../hooks';
+import { useLoadingStore } from '../../store';
 import LoadingSpinner from '../LoadingSpinner';
 
 interface LoginFormProps {
@@ -21,10 +22,10 @@ export default function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
       onSuccess: () => {
         onSuccess?.();
       },
-      redirectTo,
     });
 
   const { navigateWithLoading } = useNavigationWithLoading();
+  const { setPageLoading } = useLoadingStore();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,12 +43,18 @@ export default function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Set page loading immediately to prevent static screen
+    setPageLoading(true, 'Signing in...');
+
     // Set loading state for login process
     const success = await handleLogin(formData);
 
     if (success) {
       // Use loading navigation to redirect to dashboard
       navigateWithLoading('/dashboard', 'Welcome back! Loading dashboard...');
+    } else {
+      // Clear loading if login failed
+      setPageLoading(false);
     }
   };
 

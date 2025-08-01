@@ -9,7 +9,8 @@ import { SkeletonCard } from '../../../components';
 export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const { menuLoading, setMenuLoading } = useLoadingStore();
+  const { menuLoading, setMenuLoading, setPageLoading, setNavigating } =
+    useLoadingStore();
 
   const handleAddToCart = (item: MenuItem) => {
     // Use cart store directly
@@ -20,7 +21,9 @@ export default function MenuPage() {
   // Clear loading state when component mounts
   React.useEffect(() => {
     setMenuLoading(false);
-  }, [setMenuLoading]);
+    setPageLoading(false); // Clear the global page loading
+    setNavigating(false); // Clear the navigation state
+  }, [setMenuLoading, setPageLoading, setNavigating]);
 
   // Show skeleton loading for menu page
   if (menuLoading) {
@@ -65,7 +68,9 @@ export default function MenuPage() {
       {/* Page Header with improved mobile layout */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0 flex-1">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white truncate">Menu Management</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white truncate">
+            Menu Management
+          </h1>
           <p className="text-slate-300 mt-2 text-sm sm:text-base">
             Browse and manage your coffee menu items
           </p>

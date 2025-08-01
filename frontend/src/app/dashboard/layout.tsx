@@ -20,11 +20,11 @@ export default function DashboardLayout({
   const { user, isLoading } = useAuth({ requireAuth: true });
   const { setNavigating, setPageLoading } = useLoadingStore();
 
-  // Clear loading states when dashboard mounts
+  // Clear navigation state when dashboard mounts, but preserve page loading
   useEffect(() => {
     setNavigating(false);
-    setPageLoading(false);
-  }, [setNavigating, setPageLoading]);
+    // Don't clear page loading here - let the navigation system handle it
+  }, [setNavigating]);
 
   const { isNavigating } = useLoadingStore();
 
