@@ -81,7 +81,7 @@ export default function MenuGrid({
         <div className="text-red-400 mb-4">{error}</div>
         <button
           onClick={clearError}
-          className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
+          className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors cursor-pointer"
         >
           Try Again
         </button>
@@ -191,7 +191,7 @@ function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
         <button
           onClick={handleAddToCart}
           disabled={!item.available || isAdding}
-          className={`w-full py-2 px-4 rounded-lg font-medium transition-colors duration-200 ${
+          className={`w-full py-2 px-4 rounded-lg font-medium transition-colors duration-200 cursor-pointer ${
             item.available
               ? 'bg-amber-600 text-white hover:bg-amber-700 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-slate-700'
               : 'bg-slate-600 text-slate-400 cursor-not-allowed'

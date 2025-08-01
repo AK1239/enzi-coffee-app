@@ -163,7 +163,7 @@ export default function RegisterForm({
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-amber-300 transition-colors duration-200 focus:outline-none focus:text-amber-300"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-amber-300 transition-colors duration-200 focus:outline-none focus:text-amber-300 cursor-pointer"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
@@ -226,7 +226,7 @@ export default function RegisterForm({
           <button
             type="submit"
             disabled={isLoading}
-            className="group relative w-full flex justify-center py-3 px-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-amber-500/30 transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 overflow-hidden"
+            className="group relative w-full flex justify-center py-3 px-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white font-bold rounded-2xl shadow-2xl hover:shadow-amber-500/30 transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 overflow-hidden cursor-pointer"
           >
             <span className="relative z-10 flex items-center space-x-2">
               {isLoading ? (
@@ -260,7 +260,7 @@ export default function RegisterForm({
               onClick={() =>
                 navigateWithLoading('/login', 'Loading Sign In...')
               }
-              className="font-semibold text-transparent bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text hover:from-amber-200 hover:to-orange-300 transition-all duration-300"
+              className="font-semibold text-transparent bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text hover:from-amber-200 hover:to-orange-300 transition-all duration-300 cursor-pointer"
             >
               Sign in here
             </button>
@@ -272,7 +272,7 @@ export default function RegisterForm({
           <button
             type="button"
             onClick={() => navigateWithLoading('/', 'Loading Home...')}
-            className="inline-flex items-center space-x-2 text-gray-400 hover:text-amber-300 transition-colors duration-300 text-sm"
+            className="inline-flex items-center space-x-2 text-gray-400 hover:text-amber-300 transition-colors duration-300 text-sm cursor-pointer"
           >
             <span>←</span>
             <span>Back to home</span>

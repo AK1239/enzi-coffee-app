@@ -16,7 +16,7 @@ export default function SalesTabs({ activeTab, onTabChange }: SalesTabsProps) {
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors cursor-pointer ${
               activeTab === tab.id
                 ? 'border-amber-500 text-amber-400'
                 : 'border-transparent text-slate-400 hover:text-slate-300'

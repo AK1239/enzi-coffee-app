@@ -162,7 +162,7 @@ export default function Sidebar({
           {/* Close button for mobile with improved touch target */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors touch-manipulation"
+            className="lg:hidden p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors touch-manipulation cursor-pointer"
             style={{ minWidth: '44px', minHeight: '44px' }}
           >
             <svg
@@ -191,7 +191,7 @@ export default function Sidebar({
                   key={item.name}
                   href={item.href}
                   onClick={handleNavigation}
-                  className={`flex items-center space-x-3 px-3 sm:px-4 py-3 sm:py-4 rounded-xl transition-all duration-200 group touch-manipulation ${
+                  className={`flex items-center space-x-3 px-3 sm:px-4 py-3 sm:py-4 rounded-xl transition-all duration-200 group touch-manipulation cursor-pointer ${
                     isActive
                       ? 'bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-400/30 text-amber-300 shadow-lg'
                       : 'text-slate-300 hover:bg-slate-800/50 hover:text-white active:bg-slate-700/50'
@@ -235,7 +235,7 @@ export default function Sidebar({
             </div>
             <button
               onClick={handleLogout}
-              className="p-2 sm:p-3 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 transition-colors touch-manipulation"
+              className="p-2 sm:p-3 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 transition-colors touch-manipulation cursor-pointer"
               title="Logout"
               style={{ minWidth: '44px', minHeight: '44px' }}
             >

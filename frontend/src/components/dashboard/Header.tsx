@@ -33,7 +33,7 @@ export default function Header({ setSidebarOpen, user }: HeaderProps) {
         {/* Mobile menu button with improved touch target */}
         <button
           onClick={() => setSidebarOpen(true)}
-          className="lg:hidden p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors touch-manipulation"
+          className="lg:hidden p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors touch-manipulation cursor-pointer"
           style={{ minWidth: '44px', minHeight: '44px' }}
         >
           <svg
@@ -72,7 +72,7 @@ export default function Header({ setSidebarOpen, user }: HeaderProps) {
           {/* Cart Button with improved touch target */}
           <button
             onClick={toggleCart}
-            className="flex items-center justify-center relative p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white transition-colors touch-manipulation"
+            className="flex items-center justify-center relative p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white transition-colors touch-manipulation cursor-pointer"
             style={{ minWidth: '44px', minHeight: '44px' }}
           >
             <svg

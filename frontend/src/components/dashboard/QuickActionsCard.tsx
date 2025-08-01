@@ -44,7 +44,7 @@ export default function QuickActionsCard({ actions }: QuickActionsCardProps) {
             <button
               key={index}
               onClick={action.onClick}
-              className={`w-full flex items-center justify-between p-4 ${config.bg} border ${config.border} rounded-xl ${config.hover} transition-all duration-300`}
+              className={`w-full flex items-center justify-between p-4 ${config.bg} border ${config.border} rounded-xl ${config.hover} transition-all duration-300 cursor-pointer`}
             >
               <div className="flex items-center space-x-3">
                 <div className={`w-10 h-10 ${config.iconBg} rounded-lg flex items-center justify-center`}>

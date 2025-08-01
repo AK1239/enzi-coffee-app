@@ -187,7 +187,7 @@ export default function OrderModal({
             <button
               onClick={handleCancel}
               disabled={isSubmitting}
-              className="p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               <svg
                 className="w-5 h-5"
@@ -266,7 +266,7 @@ export default function OrderModal({
                 <div className="space-y-3">
                   <button
                     onClick={handlePrintReceipt}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-orange-700 transition-all duration-200 shadow-lg flex items-center justify-center space-x-2"
+                    className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-orange-700 transition-all duration-200 shadow-lg flex items-center justify-center space-x-2 cursor-pointer"
                   >
                     <svg
                       className="w-5 h-5"
@@ -285,7 +285,7 @@ export default function OrderModal({
                   </button>
                   <button
                     onClick={handleDownloadReceipt}
-                    className="w-full py-3 px-4 bg-slate-700/50 text-white font-semibold rounded-lg hover:bg-slate-600/50 transition-all duration-200 border border-slate-600/50 flex items-center justify-center space-x-2"
+                    className="w-full py-3 px-4 bg-slate-700/50 text-white font-semibold rounded-lg hover:bg-slate-600/50 transition-all duration-200 border border-slate-600/50 flex items-center justify-center space-x-2 cursor-pointer"
                   >
                     <svg
                       className="w-5 h-5"
@@ -350,7 +350,7 @@ export default function OrderModal({
             {orderSuccess ? (
               <button
                 onClick={handleCloseSuccess}
-                className="px-6 py-3 bg-slate-700/50 text-white font-semibold rounded-lg hover:bg-slate-600/50 transition-all duration-200 border border-slate-600/50"
+                className="px-6 py-3 bg-slate-700/50 text-white font-semibold rounded-lg hover:bg-slate-600/50 transition-all duration-200 border border-slate-600/50 cursor-pointer"
               >
                 Close
               </button>
@@ -359,14 +359,14 @@ export default function OrderModal({
                 <button
                   onClick={handleCancel}
                   disabled={isSubmitting}
-                  className="px-6 py-3 text-slate-300 hover:text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-3 text-slate-300 hover:text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleConfirmOrder}
                   disabled={isSubmitting || items.length === 0}
-                  className="px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-orange-700 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                  className="px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-orange-700 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>

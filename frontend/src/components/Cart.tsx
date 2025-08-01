@@ -98,7 +98,7 @@ export default function Cart({ className = '' }: CartProps) {
           </div>
           <button
             onClick={closeCart}
-            className="p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors text-slate-300 hover:text-white touch-manipulation flex-shrink-0"
+            className="p-2 sm:p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors text-slate-300 hover:text-white touch-manipulation flex-shrink-0 cursor-pointer"
             style={{ minWidth: '44px', minHeight: '44px' }}
           >
             <svg
@@ -150,7 +150,7 @@ export default function Cart({ className = '' }: CartProps) {
             {/* Clear Cart Button */}
             <button
               onClick={handleClearCart}
-              className="w-full py-2 px-4 text-sm text-red-400 hover:text-red-300 font-medium transition-colors"
+              className="w-full py-2 px-4 text-sm text-red-400 hover:text-red-300 font-medium transition-colors cursor-pointer"
             >
               Clear Cart
             </button>
@@ -166,7 +166,7 @@ export default function Cart({ className = '' }: CartProps) {
             {/* Checkout Button */}
             <button
               onClick={() => setIsOrderModalOpen(true)}
-              className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-orange-700 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-all duration-200 shadow-lg"
+              className="w-full py-3 px-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-orange-700 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-slate-800 transition-all duration-200 shadow-lg cursor-pointer"
             >
               Proceed to Checkout
             </button>
@@ -236,7 +236,7 @@ function CartItemCard({
         </div>
         <button
           onClick={() => onRemove(item.id)}
-          className="flex items-center justify-center p-2 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 transition-colors ml-2 touch-manipulation flex-shrink-0"
+          className="flex items-center justify-center p-2 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 transition-colors ml-2 touch-manipulation flex-shrink-0 cursor-pointer"
           title="Remove item"
           style={{ minWidth: '44px', minHeight: '44px' }}
         >
@@ -262,7 +262,7 @@ function CartItemCard({
           <button
             onClick={() => handleQuantityChange(item.quantity - 1)}
             disabled={isUpdating}
-            className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg bg-slate-600/50 hover:bg-slate-500/50 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
+            className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg bg-slate-600/50 hover:bg-slate-500/50 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation cursor-pointer"
             style={{ minWidth: '40px', minHeight: '40px' }}
           >
             -
@@ -273,7 +273,7 @@ function CartItemCard({
           <button
             onClick={() => handleQuantityChange(item.quantity + 1)}
             disabled={isUpdating}
-            className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg bg-slate-600/50 hover:bg-slate-500/50 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
+            className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg bg-slate-600/50 hover:bg-slate-500/50 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation cursor-pointer"
             style={{ minWidth: '40px', minHeight: '40px' }}
           >
             +

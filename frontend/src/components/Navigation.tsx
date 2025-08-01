@@ -54,7 +54,7 @@ export default function Navigation() {
                   onClick={() =>
                     handleNavigation('/dashboard', 'Loading Dashboard...')
                   }
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
                     pathname === '/dashboard'
                       ? 'bg-amber-800/50 text-white backdrop-blur-xl'
                       : 'text-amber-100 hover:bg-amber-800/50 hover:text-white backdrop-blur-xl'
@@ -66,7 +66,7 @@ export default function Navigation() {
                   onClick={() =>
                     handleNavigation('/dashboard/sales', 'Loading Sales...')
                   }
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors mr-8 ${
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer mr-8 ${
                     pathname === '/dashboard/sales'
                       ? 'bg-amber-800/50 text-white backdrop-blur-xl'
                       : 'text-amber-100 hover:bg-amber-800/50 hover:text-white backdrop-blur-xl'
@@ -81,7 +81,7 @@ export default function Navigation() {
                   onClick={() =>
                     handleNavigation('/login', 'Loading Sign In...')
                   }
-                  className="text-amber-300 hover:text-amber-100 font-medium transition-all duration-300 px-4 py-2 rounded-xl hover:bg-white/5"
+                  className="text-amber-300 hover:text-amber-100 font-medium transition-all duration-300 px-4 py-2 rounded-xl hover:bg-white/5 cursor-pointer"
                 >
                   Sign In
                 </button>
@@ -89,7 +89,7 @@ export default function Navigation() {
                   onClick={() =>
                     handleNavigation('/register', 'Loading Registration...')
                   }
-                  className="relative group bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white px-6 py-3 rounded-2xl font-semibold shadow-2xl hover:shadow-amber-500/25 transition-all duration-300 hover:scale-105 overflow-hidden"
+                  className="relative group bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white px-6 py-3 rounded-2xl font-semibold shadow-2xl hover:shadow-amber-500/25 transition-all duration-300 hover:scale-105 overflow-hidden cursor-pointer"
                 >
                   <span className="relative z-10">Get Started</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -110,7 +110,7 @@ export default function Navigation() {
               </div>
               <button
                 onClick={handleLogout}
-                className="px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium text-amber-100 hover:bg-amber-800/50 hover:text-white transition-colors backdrop-blur-xl touch-manipulation"
+                className="px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium text-amber-100 hover:bg-amber-800/50 hover:text-white transition-colors backdrop-blur-xl touch-manipulation cursor-pointer"
                 style={{ minWidth: '44px', minHeight: '44px' }}
               >
                 <span className="hidden sm:inline">Logout</span>
