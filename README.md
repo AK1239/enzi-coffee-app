@@ -113,15 +113,15 @@ enzi-coffee-shop/
 ### Backend (.env)
 
 ```
-DATABASE_URL="postgresql://username:password@localhost:5432/enzi_coffee_shop"
+DATABASE_URL="postgresql://postgres.wfgwujkchnonyffetygq:kariakoo@aws-0-us-east-2.pooler.supabase.com:6543/postgres?pgbouncer=true"
 JWT_SECRET="your-super-secret-jwt-key"
-PORT=3001
+FRONTEND_URL=https://enzi-coffee-app.vercel.app/
 ```
 
 ### Frontend (.env.local)
 
 ```
-NEXT_PUBLIC_API_URL="http://localhost:3001"
+NEXT_PUBLIC_API_URL="https://enzi-coffee-app.onrender.com"
 ```
 
 ## 📚 API Documentation
@@ -148,30 +148,3 @@ NEXT_PUBLIC_API_URL="http://localhost:3001"
 - **Intuitive Navigation**: Easy-to-use interface for baristas
 - **Real-time Updates**: Live cart and order management
 - **Print-friendly Receipts**: Professional receipt generation
-
-## 🧪 Testing
-
-```bash
-# Backend tests
-cd backend
-npm test
-
-# Frontend tests
-cd frontend
-npm test
-```
-
-## 🚀 Deployment
-
-### Frontend (Vercel)
-
-- Connect GitHub repository
-- Configure environment variables
-- Deploy automatically on push to main
-
-### Backend (Railway/Render)
-
-- Connect GitHub repository
-- Set up PostgreSQL database
-- Configure environment variables
-- Deploy automatically on push to main
