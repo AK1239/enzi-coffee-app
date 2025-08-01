@@ -88,7 +88,9 @@ export default function Cart({ className = '' }: CartProps) {
               </svg>
             </div>
             <div className="min-w-0 flex-1">
-              <h2 className="text-lg sm:text-xl font-bold text-white truncate">Shopping Cart</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-white truncate">
+                Shopping Cart
+              </h2>
               <p className="text-sm text-slate-400 truncate">
                 {getItemCount()} {getItemCount() === 1 ? 'item' : 'items'}
               </p>
@@ -216,7 +218,9 @@ function CartItemCard({
       {/* Item Header */}
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-white truncate text-sm sm:text-base">{item.name}</h3>
+          <h3 className="font-semibold text-white truncate text-sm sm:text-base">
+            {item.name}
+          </h3>
           <div className="flex items-center space-x-2 mt-1 flex-wrap">
             <span
               className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${getCategoryColor(
@@ -232,7 +236,7 @@ function CartItemCard({
         </div>
         <button
           onClick={() => onRemove(item.id)}
-          className="p-2 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 transition-colors ml-2 touch-manipulation flex-shrink-0"
+          className="flex items-center justify-center p-2 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 transition-colors ml-2 touch-manipulation flex-shrink-0"
           title="Remove item"
           style={{ minWidth: '44px', minHeight: '44px' }}
         >
