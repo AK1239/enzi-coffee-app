@@ -8,7 +8,12 @@ export const useNavigationWithLoading = () => {
   const navigateWithLoading = (href: string, message?: string) => {
     // Set loading states
     setNavigating(true);
-    setPageLoading(true, message || 'Loading...');
+
+    // Only set page loading for non-auth routes
+    // Auth routes will handle their own loading states
+    if (!['/login', '/register'].includes(href)) {
+      setPageLoading(true, message || 'Loading...');
+    }
 
     // Navigate to the new page
     router.push(href);

@@ -22,10 +22,6 @@ export const useRouteLoading = () => {
 
     if (currentPath === '/') {
       setPageLoading(true, 'Loading Home...');
-    } else if (currentPath === '/login') {
-      setPageLoading(true, 'Loading Sign In...');
-    } else if (currentPath === '/register') {
-      setPageLoading(true, 'Loading Registration...');
     } else if (currentPath === '/dashboard') {
       setDashboardLoading(true);
       setPageLoading(true, 'Loading Dashboard...');
@@ -39,17 +35,25 @@ export const useRouteLoading = () => {
       setSalesLoading(true);
       setPageLoading(true, 'Loading Sales...');
     }
+    // Note: Don't set page loading for /login and /register routes
+    // Let the individual pages handle their own loading states
 
     // Clear navigating state after a short delay to allow for smooth transitions
     const timer = setTimeout(() => {
       setNavigating(false);
-      setPageLoading(false);
+      // Only clear page loading for non-auth routes
+      if (!['/login', '/register'].includes(currentPath)) {
+        setPageLoading(false);
+      }
     }, 200);
 
     return () => {
       clearTimeout(timer);
       setNavigating(false);
-      setPageLoading(false);
+      // Only clear page loading for non-auth routes
+      if (!['/login', '/register'].includes(currentPath)) {
+        setPageLoading(false);
+      }
     };
   }, [
     pathname,

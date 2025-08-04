@@ -11,12 +11,11 @@ export default function RegisterPage() {
   const { isLoading } = useAuth({ redirectIfAuthenticated: true });
   const { setNavigating, setPageLoading } = useLoadingStore();
 
-  // Clear loading states when page mounts, but only if not already loading
+  // Clear loading states when page mounts
   useEffect(() => {
     setNavigating(false);
-    // Don't clear page loading if it was set by the form
-    // The form will handle clearing it on success/failure
-  }, [setNavigating]);
+    setPageLoading(false);
+  }, [setNavigating, setPageLoading]);
 
   // Show loading spinner if authentication is being checked
   if (isLoading) {

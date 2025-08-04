@@ -189,7 +189,6 @@ router.post('/logout', (_req: Request, res: Response): void => {
  * Refresh JWT token (for future implementation)
  */
 router.post('/refresh', (_req: Request, res: Response): void => {
-  // This endpoint can be implemented later for token refresh functionality
   res.status(501).json({
     success: false,
     message: 'Token refresh not implemented yet',
